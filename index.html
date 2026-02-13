@@ -10,15 +10,15 @@
     <!-- Favicon SVG -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23000'/><path d='M8 16L16 8L24 16M16 8V24' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>">
     
-    <!-- React 18 Production -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <!-- ReactDOM 18 Production -->
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Tailwind CSS (must be script, not link) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 Development (needed for UMD globals) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- ReactDOM 18 Development -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <!-- Babel Standalone -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-    <!-- Lucide React -->
+    <!-- Lucide React (loads after React is available) -->
     <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.js"></script>
     
     <style>
