@@ -921,7 +921,7 @@ function Dashboard({ user, onLogout, onOpenAuth, onNavigate }) {
         case "price": return b.markPrice - a.markPrice;
         case "change": return b.annualChange - a.annualChange;
         case "valuation": return b.valuationNum - a.valuationNum;
-        default: return a.name.localeCompare(b.name);
+        default: return 0;
       }
     });
   }, [search, sortBy, selectedCategory]);
