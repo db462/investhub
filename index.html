@@ -27,9 +27,9 @@
         }
     </style>
 </head>
-<body class="bg-black text-white">
-    <div id="root"></div>
-    
+<body class="bg-white text-gray-900">
+    <div id="root"><div style="color:white;padding:40px;">Loading...</div></div>
+    <script>window.onerror = function(msg, url, line, col, err) { document.getElementById("root").innerHTML = '<div style="color:red;padding:40px;background:white;"><h2>JS Error:</h2><pre>' + msg + '\nLine: ' + line + '\nCol: ' + col + '</pre></div>'; };</script>
     <script type="text/babel">
 const { useState, useMemo } = React;
 
@@ -226,6 +226,11 @@ const companyLogoSVGs = {
   revolut: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#0075EB"/><path d="M14 10H22C25.3 10 28 12.7 28 16C28 18.5 26.5 20.6 24.3 21.5L29 30H24L19.7 22H18V30H14V10ZM18 18H22C23.1 18 24 17.1 24 16C24 14.9 23.1 14 22 14H18V18Z" fill="white"/></svg>`,
   "epic-games": `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#2F2D2E"/><path d="M12 10H28V14H16V18H26V22H16V26H28V30H12V10Z" fill="white"/></svg>`,
   plaid: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#111111"/><rect x="10" y="10" width="6" height="6" rx="1" fill="white" opacity="0.9"/><rect x="17" y="10" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="24" y="10" width="6" height="6" rx="1" fill="white" opacity="0.3"/><rect x="10" y="17" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="17" y="17" width="6" height="6" rx="1" fill="white" opacity="0.9"/><rect x="24" y="17" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="10" y="24" width="6" height="6" rx="1" fill="white" opacity="0.3"/><rect x="17" y="24" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="24" y="24" width="6" height="6" rx="1" fill="white" opacity="0.9"/></svg>`,
+  kyuchyus: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#FFD700"/><path d="M20 8L26 18L28 28H12L14 18L20 8Z" fill="white" opacity="0.9"/><circle cx="20" cy="12" r="3" fill="white" opacity="0.7"/></svg>`,
+  "sukhoi-log": `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#B8860B"/><path d="M20 8L28 18L30 28H10L12 18L20 8Z" fill="white" opacity="0.9"/><rect x="18" y="20" width="4" height="8" fill="white" opacity="0.6"/></svg>`,
+  baimskaya: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#B87333"/><path d="M10 14L14 10L18 14L22 10L26 14L30 10V28H10V14Z" fill="white" opacity="0.9"/><path d="M14 20L22 20" stroke="white" stroke-width="2" opacity="0.7"/></svg>`,
+  udokan: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#8B4513"/><rect x="12" y="12" width="6" height="14" fill="white" opacity="0.9"/><rect x="20" y="8" width="6" height="18" fill="white" opacity="0.8"/><rect x="28" y="14" width="4" height="12" fill="white" opacity="0.7"/></svg>`,
+  tomtor: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#6A0DAD"/><path d="M20 8L24 16L20 24L16 16L20 8Z" fill="white" opacity="0.9"/><circle cx="20" cy="20" r="2" fill="white" opacity="0.8"/><path d="M20 8L26 20L20 32L14 20L20 8Z" fill="none" stroke="white" stroke-width="1" opacity="0.4"/></svg>`,
 };
 
 function CompanyLogo({ company, size = 48, className = "" }) {
@@ -242,6 +247,51 @@ function CompanyLogo({ company, size = 48, className = "" }) {
 
 // ─── Demo Data ────────────────────────────────────────────────
 const companies = [
+  {
+    id: "kyuchyus", name: "Кючус (Kyuchyus)", ticker: "TKYCH", tagline: "Крупное золоторудное месторождение в Якутии, запасы 175 тонн", category: "Tokens",
+    color: "#FFD700", founded: "2020", hq: "Yakutia, Russia", founders: "Polyus Gold", sector: "Gold Mining", highlights: ["Запасы золота 175 тонн", "Категории C1+C2", "Расположено в Якутии (Саха)", "Токенизированный доступ к инвестициям"],
+    markPrice: 12.50, annualChange: 34, valuation: "$2.8B", valuationNum: 2.8e9, fundsRaised: "$450M", lastRound: "$120M", roundDate: "2024",
+    about: `Кючус — одно из крупнейших неразработанных золоторудных месторождений России, расположенное в Республике Саха (Якутия).\n\nМесторождение содержит около 175 тонн золота категорий запасов C1+C2. Токенизированные инвестиции обеспечивают долевой доступ к этому стратегическому горнодобывающему активу.`,
+    opportunities: "Цена золота на историческом максимуме. Стратегическая важность внутренней золотодобычи. Растущий спрос на альтернативный инвестиционный доступ к горнодобывающим активам через токенизацию.",
+    financials: "Оценочная стоимость запасов в недрах превышает $12 млрд при текущих ценах на золото. Держатели токенов получают пропорциональный доступ к доходам от добычи после начала промышленной эксплуатации.",
+    risks: "Удалённое арктическое расположение увеличивает операционные расходы. Регуляторные риски в российском горнодобывающем секторе. Доходы отсутствуют на стадии до начала добычи. Ликвидность токенов может быть ограничена."
+  },
+  {
+    id: "sukhoi-log", name: "Сухой Лог (Sukhoi Log)", ticker: "TSLOG", tagline: "Крупнейшее в мире неразработанное золоторудное месторождение, запасы 1500+ тонн", category: "Tokens",
+    color: "#B8860B", founded: "2019", hq: "Irkutsk Oblast, Russia", founders: "Polyus Gold", sector: "Gold Mining", highlights: ["Запасы золота 1500+ тонн", "Крупнейшее неразработанное в мире", "Потенциал открытой добычи", "Стратегический национальный актив"],
+    markPrice: 28.00, annualChange: 52, valuation: "$8.5B", valuationNum: 8.5e9, fundsRaised: "$1.2B", lastRound: "$350M", roundDate: "2024",
+    about: `Сухой Лог — крупнейшее в мире неразработанное золоторудное месторождение, расположенное в Иркутской области России.\n\nС подтверждёнными запасами более 1500 тонн золота это один из наиболее значимых минеральных активов в мире. Токенизированный доступ обеспечивает долевые инвестиции в это мегаместорождение.`,
+    opportunities: "Непревзойдённый масштаб как крупнейшего неразработанного золоторудного месторождения в мире. Потенциал открытой добычи с низкой себестоимостью. Глобальный спрос на золото обусловлен покупками центробанков и геополитической неопределённостью.",
+    financials: "Оценочная стоимость запасов в недрах превышает $100 млрд при текущих ценах на золото. Полюс Золото, крупнейший золотодобытчик России, владеет лицензией. Потенциальная добыча — 50+ тонн ежегодно.",
+    risks: "Требуются масштабные капитальные вложения на освоение. Экологические и разрешительные сложности. Геополитические риски, влияющие на международные инвестиционные потоки. Длительные сроки разработки."
+  },
+  {
+    id: "baimskaya", name: "Баимская (Baimskaya)", ticker: "TBAIM", tagline: "Крупное медно-золотое порфировое месторождение на Чукотке", category: "Tokens",
+    color: "#B87333", founded: "2021", hq: "Chukotka, Russia", founders: "Trianon / KAZ Minerals", sector: "Copper & Gold Mining", highlights: ["9.5 Мт медного эквивалента", "Крупная медно-золотая порфировая система", "Ожидаемый срок эксплуатации 25+ лет", "Критический минерал для энергоперехода"],
+    markPrice: 8.75, annualChange: 28, valuation: "$4.2B", valuationNum: 4.2e9, fundsRaised: "$800M", lastRound: "$200M", roundDate: "2024",
+    about: `Баимская — одно из крупнейших в мире неразработанных медно-золотых порфировых месторождений, расположенное в Чукотском автономном округе России.\n\nМесторождение содержит около 9,5 млн тонн медного эквивалента. Токенизированные инвестиции дают доступ к критическим минералам, необходимым для глобального энергоперехода.`,
+    opportunities: "Спрос на медь резко растёт из-за электрификации и возобновляемой энергетики. Глобально ограничено число новых крупных медных открытий. Прогнозируемый срок эксплуатации 25+ лет обеспечивает долгосрочную стоимость.",
+    financials: "Общие инвестиции в проект оцениваются в $7-8 млрд. Ожидаемое годовое производство — 300 000+ тонн медного концентрата. Держатели токенов получают пропорциональный доступ к экономике производства.",
+    risks: "Экстремальные арктические условия увеличивают затраты на строительство и эксплуатацию. Значительные требования к инфраструктуре. Длительные сроки строительства. Волатильность валют и цен на сырьё."
+  },
+  {
+    id: "udokan", name: "Удокан (Udokan)", ticker: "TUDKN", tagline: "Одно из крупнейших медных месторождений мира, добыча начата", category: "Tokens",
+    color: "#8B4513", founded: "2020", hq: "Zabaikalsky Krai, Russia", founders: "USM Holdings", sector: "Copper Mining", highlights: ["Запасы меди 26,7 Мт", "Добыча начата в 2023", "Топ-3 мировых медных месторождений", "Целевой объём 135 000 тонн катодной меди в год"],
+    markPrice: 15.30, annualChange: 45, valuation: "$5.6B", valuationNum: 5.6e9, fundsRaised: "$2.9B", lastRound: "$500M", roundDate: "2023",
+    about: `Удокан — одно из крупнейших медных месторождений мира, расположенное в Забайкальском крае России. Месторождение содержит около 26,7 млн тонн меди.\n\nДобыча начата в 2023 году компанией Удоканская медь (USM Holdings). Токенизированные инвестиции обеспечивают прямой доступ к этому мировому добывающему медному активу.`,
+    opportunities: "Достигнута фаза добычи — генерация выручки началась. Медь критически важна для электромобилей, ВИЭ и электрификации. Глобальный дефицит меди прогнозируется до 2030 года.",
+    financials: "Первая очередь рассчитана на 135 000 тонн катодной меди в год. Общие инвестиции превышают $2,9 млрд. Наращивание выручки идёт, первая катодная медь произведена в 2023.",
+    risks: "Риски выхода на проектную мощность. Удалённое расположение в Восточной Сибири. Капиталоёмкое расширение второй очереди. Волатильность цен на медь влияет на доходность."
+  },
+  {
+    id: "tomtor", name: "Томтор (Tomtor)", ticker: "TTMTR", tagline: "Месторождение редкоземельных элементов и ниобия мирового класса", category: "Tokens",
+    color: "#6A0DAD", founded: "2021", hq: "Yakutia, Russia", founders: "TriArk Mining", sector: "Rare Earth Elements", highlights: ["Одно из богатейших РЗЭ-месторождений мира", "Критические минералы для хай-тека", "Ниобий и редкие земли", "Стратегический геополитический актив"],
+    markPrice: 5.40, annualChange: 18, valuation: "$1.8B", valuationNum: 1.8e9, fundsRaised: "$280M", lastRound: "$75M", roundDate: "2024",
+    about: `Томтор — одно из крупнейших и богатейших месторождений редкоземельных элементов (РЗЭ) и ниобия в мире, расположенное в Якутии, Россия.\n\nМесторождение содержит исключительно высокие концентрации РЗЭ, критически важных для электроники, обороны и зелёной энергетики. Токенизированные инвестиции открывают доступ к этому стратегическому минеральному ресурсу.`,
+    opportunities: "Мировой рынок РЗЭ доминирует Китай — спрос на диверсификацию высок. Критические минералы для электромобилей, ветрогенераторов и обороны. Растущий фокус Запада на безопасности цепочек поставок.",
+    financials: "Оценочная стоимость месторождения превышает $15 млрд по текущим ценам на РЗЭ. Финансирование разработки продолжается при государственной поддержке. Токен даёт доступ на ранней стадии к производству РЗЭ.",
+    risks: "Ранняя стадия разработки без текущих доходов от добычи. Требуется сложная металлургическая переработка. Ограниченный рынок РЗЭ за пределами Китая. Удалённое расположение увеличивает логистические затраты."
+  },
   {
     id: "anthropic", name: "Anthropic", ticker: "UTANTH", tagline: "AI safety leader building the future of intelligence", category: "Pre-IPO",
     color: "#D4A27F", founded: "2021", hq: "San Francisco, CA", founders: "Dario Amodei, Daniela Amodei", sector: "Artificial Intelligence", highlights: ["10x revenue growth in 18 months", "120M+ monthly active users", "$5B+ cash reserves", "Strategic partnerships with Amazon & Google"],
@@ -850,17 +900,22 @@ function DetailPage({ companyId, onBack, user, onOpenAuth }) {
 }
 
 // ─── Dashboard (Always Visible) ──────────────────────────────
-function Dashboard({ user, onLogout, onOpenAuth }) {
+function Dashboard({ user, onLogout, onOpenAuth, onNavigate }) {
   const [search, setSearch] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [sortBy, setSortBy] = useState("name");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const categoryTabs = ["All", "Pre-IPO", "Tokens"];
 
   const filtered = useMemo(() => {
-    let list = companies.filter(c =>
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.tagline.toLowerCase().includes(search.toLowerCase()) ||
-      c.ticker.toLowerCase().includes(search.toLowerCase())
-    );
+    let list = companies.filter(c => {
+      const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.tagline.toLowerCase().includes(search.toLowerCase()) ||
+        c.ticker.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = selectedCategory === "All" || c.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
     return list.sort((a, b) => {
       switch (sortBy) {
         case "price": return b.markPrice - a.markPrice;
@@ -869,7 +924,7 @@ function Dashboard({ user, onLogout, onOpenAuth }) {
         default: return a.name.localeCompare(b.name);
       }
     });
-  }, [search, sortBy]);
+  }, [search, sortBy, selectedCategory]);
 
   if (selectedCompany) {
     return <DetailPage companyId={selectedCompany} onBack={() => setSelectedCompany(null)} user={user} onOpenAuth={onOpenAuth} />;
@@ -884,6 +939,7 @@ function Dashboard({ user, onLogout, onOpenAuth }) {
               <TrendingUp size={18} className="text-white" />
             </div>
             <h1 className="text-xl font-bold text-gray-900">InvestHub</h1>
+            <button onClick={() => onNavigate("howitworks")} className="ml-6 text-sm font-medium text-gray-500 hover:text-indigo-600 transition hidden sm:block">How It Works</button>
           </div>
           {user ? (
             <div className="flex items-center gap-4">
@@ -911,8 +967,16 @@ function Dashboard({ user, onLogout, onOpenAuth }) {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-6">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Pre-IPO Investment Offerings</h2>
-        <p className="text-gray-500 text-lg mb-8">Discover and invest in high-growth private companies before they go public.</p>
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Investment Offerings</h2>
+        <p className="text-gray-500 text-lg mb-6">Discover and invest in high-growth private companies and tokenized mineral assets.</p>
+        <div className="flex gap-2 mb-6">
+          {categoryTabs.map(cat => (
+            <button key={cat} onClick={() => setSelectedCategory(cat)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === cat ? "bg-indigo-600 text-white shadow-md" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+              {cat} {cat === "All" ? `(${companies.length})` : `(${companies.filter(c => c.category === cat).length})`}
+            </button>
+          ))}
+        </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -1188,10 +1252,738 @@ function RegisterPageInline({ onComplete, onGoToLogin }) {
   );
 }
 
+// ─── How It Works Page ────────────────────────────────────────
+function HowItWorksPage({ onNavigate }) {
+  const [activeSection, setActiveSection] = useState("mining");
+
+  const sections = [
+    { id: "mining", label: "Месторождения", icon: "⛏" },
+    { id: "recycling", label: "Переработка отходов", icon: "♻" },
+    { id: "preipo", label: "Pre-IPO", icon: "📈" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => onNavigate("dashboard")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition">
+              <ArrowLeft size={18} />
+            </button>
+            <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <TrendingUp size={18} className="text-white" />
+            </div>
+            <h1 className="text-xl font-bold">InvestHub</h1>
+          </div>
+          <button onClick={() => onNavigate("dashboard")} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition">
+            К инвестициям
+          </button>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-8 text-center">
+        <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-indigo-600 bg-clip-text text-transparent">Как это работает</h2>
+        <p className="text-gray-500 text-lg max-w-2xl mx-auto">Узнайте о процессе инвестирования в каждый класс активов на нашей платформе</p>
+      </div>
+
+      {/* Section Tabs */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10">
+        <div className="flex gap-3 justify-center flex-wrap">
+          {sections.map(s => (
+            <button key={s.id} onClick={() => setActiveSection(s.id)}
+              className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
+                activeSection === s.id
+                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                  : "bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900"
+              }`}>
+              <span className="text-lg">{s.icon}</span> {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+        {activeSection === "mining" && <MiningSection />}
+        {activeSection === "recycling" && <RecyclingSection />}
+        {activeSection === "preipo" && <PreIPOSection />}
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-100 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
+          <p>InvestHub — Образовательный контент. Не является финансовой рекомендацией.</p>
+          <button onClick={() => onNavigate("dashboard")} className="mt-2 sm:mt-0 text-indigo-600 hover:text-indigo-700 transition">
+            ← К инвестициям
+          </button>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ─── Mining Section ───────────────────────────────────────────
+function MiningSection() {
+  return (
+    <div className="space-y-10">
+      {/* Intro */}
+      <div className="bg-gradient-to-br from-amber-50 to-white border border-amber-200 rounded-2xl p-8">
+        <div className="text-xs font-semibold tracking-widest text-amber-600 uppercase mb-3">Токены месторождений</div>
+        <h3 className="text-2xl font-bold mb-3">От геологоразведки до подтверждённых запасов</h3>
+        <p className="text-gray-500 leading-relaxed max-w-3xl">
+          Инвестирование в месторождения полезных ископаемых следует цепочке этапов геологоразведки. Каждый этап резко увеличивает стоимость горнодобывающей лицензии и снижает риск. Благодаря токенизации инвесторы получают фракционный доступ к этим активам — от лицензий на раннюю разведку (низкая стоимость, высокий риск) к запасам стоимостью в миллиарды.
+        </p>
+      </div>
+
+      {/* Pyramid of Categories */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Пирамида надёжности</h3>
+        <p className="text-gray-500 text-sm mb-6">Российская классификация делит подземные ресурсы на <span className="text-emerald-600 font-medium">Запасы</span> (подтверждённые) и <span className="text-red-600 font-medium">Ресурсы</span> (прогнозные). Более высокая категория = дороже и надёжнее.</p>
+        <div className="space-y-2 flex flex-col items-center">
+          {[
+            { cat: "A", name: "Полностью разведанные", desc: "Границы, качество и условия добычи полностью определены. Месторождение в добыче.", pct: "~95%", color: "emerald", w: "45%" },
+            { cat: "B", name: "Предварительно разведанные", desc: "Контуры определены, пространственное положение примерно установлено.", pct: "~80%", color: "emerald", w: "52%" },
+            { cat: "C₁", name: "Разведанные запасы", desc: "Основная часть разведанных месторождений. Продуктивность подтверждена бурением.", pct: "~60%", color: "blue", w: "60%" },
+            { cat: "C₂", name: "Оценённые запасы", desc: "Перспективные площади рядом с разведанными. Экономическая значимость обоснована, но не полностью подтверждена.", pct: "~35%", color: "amber", w: "70%" },
+            { cat: "P₁", name: "Прогнозные ресурсы", desc: "Расширение за границы C₂. Оценено по аналогии.", pct: "~15%", color: "red", w: "80%" },
+            { cat: "P₂", name: "Предполагаемые ресурсы", desc: "На основе геологических предпосылок и аналогии с изученными территориями.", pct: "~5%", color: "red", w: "88%" },
+            { cat: "P₃", name: "Потенциальные ресурсы", desc: "Перспективные территории. Наличие предполагается региональной геологией.", pct: "~1%", color: "gray", w: "96%" },
+          ].map((lv, i) => (
+            <div key={i} className={`flex items-center gap-4 p-4 rounded-xl border border-${lv.color}-200 bg-${lv.color}-50 hover:-translate-y-0.5 transition`} style={{ width: lv.w, minWidth: "280px" }}>
+              <span className={`text-2xl font-black text-${lv.color}-600 min-w-[48px] text-center`}>{lv.cat}</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold">{lv.name}</div>
+                <div className="text-xs text-gray-500 line-clamp-2">{lv.desc}</div>
+              </div>
+              <span className={`text-xs font-bold px-2 py-1 rounded-md bg-${lv.color}-100 text-${lv.color}-600 whitespace-nowrap`}>{lv.pct}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-6 mt-4">
+          <span className="text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-600 border border-emerald-200">▲ Запасы (A, B, C₁, C₂)</span>
+          <span className="text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-md bg-red-50 text-red-600 border border-red-200">▼ Ресурсы (P₁, P₂, P₃)</span>
+        </div>
+      </div>
+
+      {/* Value Multiplier */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Эффект мультипликации</h3>
+        <p className="text-gray-500 text-sm mb-6">Каждый этап геологоразведки трансформирует дешёвый высокорисковый актив в ценный актив с подтверждённой стоимостью.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          {[
+            { label: "Лицензия P₁/P₂", price: "100-500K ₽", note: "Поисковая лицензия на геологоразведку", color: "red" },
+            { label: "Запасы C₂/C₁", price: "50-500M ₽", note: "Подтверждённые запасы, стоимость аукциона", color: "amber" },
+            { label: "Добыча (A/B)", price: "Миллиарды ₽+", note: "Действующее месторождение, приносящее выручку", color: "emerald" },
+          ].map((v, i) => (
+            <div key={i} className={`bg-white border border-gray-200 rounded-xl p-6 text-center hover:-translate-y-1 transition`}>
+              <div className="text-xs font-semibold tracking-widest text-gray-500 uppercase mb-2">{v.label}</div>
+              <div className={`text-2xl font-bold text-${v.color}-600 mb-1`}>{v.price}</div>
+              <div className="text-xs text-gray-500">{v.note}</div>
+            </div>
+          ))}
+        </div>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
+          <div className="text-sm font-semibold text-amber-600 mb-1">Мультипликатор: ×100 to ×10 000</div>
+          <p className="text-xs text-gray-500 max-w-xl mx-auto">Затраты на геологоразведку (бурение, лабораторные анализы, документация) могут быть 20-200M ₽, но финальная стоимость подтверждённого месторождения измеряется в сотнях миллионов и миллиардах.</p>
+        </div>
+      </div>
+
+      {/* Development Stages */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Стадии освоения</h3>
+        <p className="text-gray-500 text-sm mb-6">Пошаговый путь от идеи к промышленной добыче.</p>
+        <div className="space-y-4">
+          {[
+            { stage: 1, title: "Получение поисковой лицензии", desc: "Лицензия на геологоразведку получается на аукционе Роснедра или через заявку. Площадь содержит только прогнозные ресурсы P₁–P₃.", meta: ["3-6 месяцев", "Лицензия 5-7 лет", "От 100K ₽"], color: "gray" },
+            { stage: 2, title: "Геологоразведочные работы (ГРР)", desc: "Геологи проводят полевые работы: геологическое обследование, геофизика, геохимия, бурение, отбор проб. Цель: преобразовать ресурсы P₁ в запасы C₂.", meta: ["2-5 лет", "Геологи, геофизики", "20-200M ₽"], color: "red" },
+            { stage: 3, title: "Постановка запасов на баланс (ГКЗ)", desc: "Расчёт запасов C₂ (или C₁) и их утверждение Государственной комиссией. Запасы вносятся в Государственный баланс минеральных ресурсов.", meta: ["6-12 месяцев", "Экспертиза ГКЗ/ТКЗ", "Государственный баланс"], color: "amber" },
+            { stage: 4, title: "Разведка месторождения", desc: "Детальное изучение: разведочное бурение, геологическое обследование 1:10 000, технологическое тестирование, технико-хозяйственное обоснование. Цель: C₂ → C₁ → B.", meta: ["2-5 лет", "От 100M ₽", "Результат: C₂ → C₁ → B"], color: "blue" },
+            { stage: 5, title: "Промышленная добыча", desc: "Получение лицензии на добычу (до 25 лет). Строительство инфраструктуры, горнотехническая подготовка, начало промышленной эксплуатации. Окупаемость: 6-8 лет.", meta: ["Лицензия до 25 лет", "CAPEX от 1B ₽", "Выручка 50-100M+ ₽/год"], color: "emerald" },
+          ].map((s, i) => (
+            <div key={i} className="flex gap-5">
+              <div className="flex flex-col items-center">
+                <div className={`w-10 h-10 rounded-full border-2 border-${s.color}-500 bg-white flex items-center justify-center text-sm font-bold text-${s.color}-600`}>{s.stage}</div>
+                {i < 4 && <div className="w-0.5 flex-1 bg-gray-200 mt-2"></div>}
+              </div>
+              <div className="flex-1 bg-white border border-gray-200 rounded-xl p-5 mb-1">
+                <h4 className="font-semibold mb-2">{s.title}</h4>
+                <p className="text-sm text-gray-500 mb-3">{s.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {s.meta.map((m, j) => (
+                    <span key={j} className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 border border-gray-200 text-gray-600">{m}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Key Risks */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Ключевые риски</h3>
+        <p className="text-gray-500 text-sm mb-6">Мультипликатор работает не всегда. Большинство поисковых лицензий не выживают до стадии добычи.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { icon: "🎰", title: "Геологический риск", desc: "Запасы могут не подтвердиться. P₁ имеет только ~15% вероятность. Из 10 проектов до C₂ доходят 2-3." },
+            { icon: "📉", title: "Ценовой риск", desc: "Цены на сырьё могут упасть в течение 3-7 лет разведки, делая месторождение убыточным." },
+            { icon: "⚖️", title: "Регуляторный риск", desc: "Нарушение лицензии → отзыв. Изменение законодательства, экологические ограничения, согласования." },
+            { icon: "🏗", title: "Инфраструктурный риск", desc: "Удалённость от дорог, энергии, потребителей. Стоимость инфраструктуры может превысить стоимость запасов." },
+            { icon: "💸", title: "Финансовый риск", desc: "Деньги кончаются до завершения разведки. Нет выручки до начала добычи — минимум 5-10 лет в убытке." },
+            { icon: "🧪", title: "Технологический риск", desc: "Сложная геология, низкое содержание, сложное обогащение — проект может быть технически убыточным." },
+          ].map((r, i) => (
+            <div key={i} className="bg-white border border-gray-200 rounded-xl p-5">
+              <div className="text-2xl mb-2">{r.icon}</div>
+              <h4 className="text-sm font-semibold mb-1">{r.title}</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">{r.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Junior Model */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Юниорная бизнес-модель</h3>
+        <p className="text-gray-500 text-sm mb-6">Классическая модель создания стоимости через геологоразведку — основа бизнеса юниорных майнеров.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { num: "1", title: "Купить дёшево", desc: "Получить поисковую лицензию (P₁/P₂) на аукционе за 100-500K ₽. Площадь ещё 'пустая' — только прогнозы.", color: "red" },
+            { num: "2", title: "Вложить в ГРР", desc: "Инвестировать 20-200M ₽ в разведку: бурение, отбор проб, лабораторный анализ, документация, экспертиза ГКЗ.", color: "amber" },
+            { num: "3", title: "Продать дорого", desc: "Продать ООО с лицензией и подтверждённые запасы C₂/C₁ крупной горнодобывающей компании за сотни миллионов или миллиарды ₽.", color: "emerald" },
+          ].map((s, i) => (
+            <div key={i} className={`bg-white border border-${s.color}-200 rounded-xl p-6`}>
+              <div className={`text-4xl font-black text-${s.color}-600 mb-2`}>{s.num}</div>
+              <h4 className="font-semibold mb-2">{s.title}</h4>
+              <p className="text-sm text-gray-500">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Recycling Diagram Components ─────────────────────────────
+const rc = {
+  bg: "#f5f5f7", white: "#ffffff", card: "#ffffff", border: "#d2d2d7", borderLight: "#e8e8ed",
+  text: "#1d1d1f", textSec: "#6e6e73", textTer: "#86868b",
+  blue: "#0071e3", blueLight: "#e1f0ff", bluePale: "#f0f7ff",
+  orange: "#e8601c", orangeLight: "#fff0e6", orangePale: "#fff8f3",
+  green: "#28a745", greenLight: "#e6f9ec", greenPale: "#f3fcf5",
+  red: "#d12e2e", redLight: "#fce8e8", redPale: "#fdf4f4",
+  purple: "#7b61ff", purpleLight: "#eeebff", purplePale: "#f7f5ff",
+};
+
+const RHopper = ({ x, y, w, h, color, accent, hovered }) => {
+  const gid = `hop-${x}-${y}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.15" />
+        </linearGradient>
+      </defs>
+      <ellipse cx={x + w / 2} cy={y + h + 4} rx={w * 0.3} ry="4" fill="#000" opacity="0.05" />
+      <path d={`M${x+4},${y+4} Q${x+4},${y} ${x+10},${y} L${x+w-10},${y} Q${x+w-4},${y} ${x+w-4},${y+4} L${x+w-4},${y+h*0.38} L${x+w*0.62},${y+h*0.82} L${x+w*0.62},${y+h} L${x+w*0.38},${y+h} L${x+w*0.38},${y+h*0.82} L${x+4},${y+h*0.38} Z`}
+        fill={`url(#${gid})`} stroke={color} strokeWidth="2" strokeLinejoin="round" />
+      {[0.22,0.38,0.54,0.7,0.86].map((p,i) => (
+        <line key={i} x1={x+w*p-2} y1={y+h*0.08} x2={x+w*p-2} y2={y+h*0.2} stroke={color} strokeWidth="1.5" opacity="0.35" strokeLinecap="round" />
+      ))}
+      <ellipse cx={x+w/2} cy={y+h*0.28} rx={w*0.32} ry={h*0.06} fill={color} opacity="0.12" />
+      <line x1={x+10} y1={y+3} x2={x+w*0.4} y2={y+3} stroke="#fff" strokeWidth="2" opacity="0.5" strokeLinecap="round" />
+    </g>
+  );
+};
+
+const RConveyor = ({ x, y, w, h, color, accent }) => {
+  const gid = `conv-${x}-${y}`;
+  const rr = h * 0.22;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <ellipse cx={x+w/2} cy={y+h+6} rx={w*0.35} ry="4" fill="#000" opacity="0.04" />
+      <line x1={x+w*0.25} y1={y+h*0.72} x2={x+w*0.2} y2={y+h} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1={x+w*0.75} y1={y+h*0.72} x2={x+w*0.8} y2={y+h} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1={x+w*0.5} y1={y+h*0.72} x2={x+w*0.5} y2={y+h*0.95} stroke={color} strokeWidth="2" strokeLinecap="round" />
+      <rect x={x+rr+4} y={y+h*0.1} width={w-rr*2-8} height={h*0.32} rx="3" fill={`url(#${gid})`} stroke={color} strokeWidth="1.8" />
+      <line x1={x+rr+6} y1={y+h*0.72} x2={x+w-rr-6} y2={y+h*0.72} stroke={color} strokeWidth="1.5" opacity="0.5" />
+      <circle cx={x+rr+4} cy={y+h*0.46} r={rr} fill={rc.white} stroke={color} strokeWidth="2" />
+      <circle cx={x+rr+4} cy={y+h*0.46} r={rr*0.3} fill={color} opacity="0.2" />
+      <circle cx={x+w-rr-4} cy={y+h*0.46} r={rr} fill={rc.white} stroke={color} strokeWidth="2" />
+      <circle cx={x+w-rr-4} cy={y+h*0.46} r={rr*0.3} fill={color} opacity="0.2" />
+    </g>
+  );
+};
+
+const RDrumDryer = ({ x, y, w, h, color, accent }) => {
+  const gid = `drum-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.4" />
+          <stop offset="50%" stopColor={accent} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.35" />
+        </linearGradient>
+      </defs>
+      <ellipse cx={x+w/2} cy={y+h+6} rx={w*0.3} ry="5" fill="#000" opacity="0.05" />
+      <line x1={x+w*0.22} y1={y+h*0.88} x2={x+w*0.16} y2={y+h+2} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1={x+w*0.78} y1={y+h*0.88} x2={x+w*0.84} y2={y+h+2} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <rect x={x+16} y={y+h*0.08} width={w-32} height={h*0.78} rx="4" fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <ellipse cx={x+16} cy={y+h*0.47} rx="14" ry={h*0.39} fill={accent} stroke={color} strokeWidth="2" opacity="0.6" />
+      <ellipse cx={x+w-16} cy={y+h*0.47} rx="14" ry={h*0.39} fill={accent} stroke={color} strokeWidth="2" opacity="0.6" />
+      {[0.3,0.5,0.7].map((p,i) => (
+        <line key={i} x1={x+w*p} y1={y+h*0.08} x2={x+w*p} y2={y+h*0.86} stroke={color} strokeWidth="1" opacity="0.2" />
+      ))}
+      <g opacity="0.6">
+        <path d={`M${x+w+2},${y+h*0.32} q4,-8 2,-2 q6,-4 0,6 q4,-6 2,0 q4,4 -2,6 q-2,4 -4,0 q2,4 -2,4 q-4,0 -2,-4 q-4,2 -2,-2 q2,-4 0,-6 z`} fill={rc.orange} opacity="0.5" />
+        <path d={`M${x+w+4},${y+h*0.5} q3,-5 1,-1 q4,-3 0,4 q3,-4 1,0 q2,3 -2,4 q-2,2 -2,0 q-2,2 -1,-1 z`} fill={rc.red} opacity="0.4" />
+      </g>
+      <rect x={x+20} y={y+h*0.12} width={w-40} height={h*0.12} rx="3" fill="#fff" opacity="0.25" />
+    </g>
+  );
+};
+
+const RCyclone = ({ x, y, w, h, color, accent }) => {
+  const gid = `cyc-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <ellipse cx={x+w/2} cy={y+h+4} rx={w*0.18} ry="3" fill="#000" opacity="0.05" />
+      <rect x={x+w*0.12} y={y} width={w*0.76} height={h*0.42} rx="6" fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <path d={`M${x+w*0.12},${y+h*0.42} L${x+w*0.43},${y+h*0.82} L${x+w*0.57},${y+h*0.82} L${x+w*0.88},${y+h*0.42}`}
+        fill={`url(#${gid})`} stroke={color} strokeWidth="2" strokeLinejoin="round" />
+      <rect x={x+w*0.4} y={y+h*0.82} width={w*0.2} height={h*0.18} rx="2" fill={accent} stroke={color} strokeWidth="1.8" opacity="0.7" />
+      <rect x={x+w*0.88} y={y+h*0.06} width={w*0.18} height={h*0.14} rx="3" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.6" />
+    </g>
+  );
+};
+
+const RBagFilter = ({ x, y, w, h, color, accent }) => {
+  const gid = `flt-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <ellipse cx={x+w/2} cy={y+h+4} rx={w*0.3} ry="3" fill="#000" opacity="0.04" />
+      <rect x={x} y={y+8} width={w} height={h-8} rx="5" fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <rect x={x-3} y={y} width={w+6} height={12} rx="4" fill={accent} stroke={color} strokeWidth="1.8" opacity="0.6" />
+      {[0.18,0.36,0.54,0.72,0.88].map((p,i) => (
+        <g key={i}>
+          <line x1={x+w*p} y1={y+16} x2={x+w*p} y2={y+h-8} stroke={color} strokeWidth="1.8" opacity="0.3" strokeLinecap="round" />
+          <circle cx={x+w*p} cy={y+h-8} r="2.5" fill={color} opacity="0.2" />
+        </g>
+      ))}
+      <rect x={x+w} y={y+h*0.3} width={16} height={h*0.22} rx="3" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.6" />
+      <rect x={x-16} y={y+h*0.55} width={16} height={h*0.22} rx="3" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.6" />
+    </g>
+  );
+};
+
+const RMixer = ({ x, y, w, h, color, accent }) => {
+  const gid = `mix-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <rect x={x+w/2-14} y={y-18} width={28} height={16} rx="4" fill={accent} stroke={color} strokeWidth="1.8" opacity="0.6" />
+      <line x1={x+w/2} y1={y-2} x2={x+w/2} y2={y+h*0.6} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <path d={`M${x+4},${y+4} Q${x+4},${y} ${x+10},${y} L${x+w-10},${y} Q${x+w-4},${y} ${x+w-4},${y+4} L${x+w-4},${y+h*0.6} Q${x+w/2},${y+h+8} ${x+4},${y+h*0.6} Z`}
+        fill={`url(#${gid})`} stroke={color} strokeWidth="2" strokeLinejoin="round" />
+      <line x1={x+w*0.18} y1={y+h*0.42} x2={x+w*0.82} y2={y+h*0.42} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+    </g>
+  );
+};
+
+const RTank = ({ x, y, w, h, color, accent }) => {
+  const gid = `tnk-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.3" />
+          <stop offset="60%" stopColor={accent} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.35" />
+        </linearGradient>
+      </defs>
+      <line x1={x+w*0.22} y1={y+h*0.82} x2={x+w*0.15} y2={y+h} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1={x+w*0.78} y1={y+h*0.82} x2={x+w*0.85} y2={y+h} stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <rect x={x+6} y={y+12} width={w-12} height={h*0.7} rx="8" fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <ellipse cx={x+w/2} cy={y+14} rx={w/2-6} ry="10" fill={accent} stroke={color} strokeWidth="1.8" opacity="0.5" />
+    </g>
+  );
+};
+
+const RExtruder = ({ x, y, w, h, color, accent }) => {
+  const gid = `ext-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.15" />
+        </linearGradient>
+      </defs>
+      <rect x={x} y={y+h*0.18} width={w*0.72} height={h*0.52} rx="6" fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <path d={`M${x+w*0.72},${y+h*0.1} L${x+w*0.95},${y+h*0.28} L${x+w*0.95},${y+h*0.72} L${x+w*0.72},${y+h*0.76} Z`}
+        fill={accent} stroke={color} strokeWidth="2" opacity="0.5" />
+      <line x1={x+w*0.2} y1={y+h*0.7} x2={x+w*0.2} y2={y+h} stroke={color} strokeWidth="2" strokeLinecap="round" />
+      <line x1={x+w*0.6} y1={y+h*0.7} x2={x+w*0.6} y2={y+h} stroke={color} strokeWidth="2" strokeLinecap="round" />
+    </g>
+  );
+};
+
+const RTunnelOven = ({ x, y, w, h, color, accent }) => {
+  const gid = `tun-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.4" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.12" />
+        </linearGradient>
+      </defs>
+      <path d={`M${x},${y+h} L${x},${y+h*0.25} Q${x},${y} ${x+w*0.08},${y} L${x+w*0.92},${y} Q${x+w},${y} ${x+w},${y+h*0.25} L${x+w},${y+h} Z`}
+        fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <rect x={x-6} y={y+h*0.35} width={8} height={h*0.45} rx="3" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.5" />
+      <rect x={x+w-2} y={y+h*0.35} width={8} height={h*0.45} rx="3" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.5" />
+      {[0.2,0.4,0.6,0.8].map((p,i) => (
+        <g key={i} opacity="0.3">
+          <path d={`M${x+w*p-5},${y+14} Q${x+w*p},${y+8} ${x+w*p+5},${y+14}`} fill="none" stroke={rc.orange} strokeWidth="1.5" strokeLinecap="round" />
+        </g>
+      ))}
+    </g>
+  );
+};
+
+const RContainer = ({ x, y, w, h, color, accent }) => {
+  const gid = `cnt-${x}`;
+  return (
+    <g>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.35" />
+        </linearGradient>
+      </defs>
+      <path d={`M${x+4},${y} L${x+w-4},${y} Q${x+w},${y} ${x+w},${y+4} L${x+w},${y+h-4} Q${x+w},${y+h} ${x+w-4},${y+h} L${x+4},${y+h} Q${x},${y+h} ${x},${y+h-4} L${x},${y+4} Q${x},${y} ${x+4},${y} Z`}
+        fill={`url(#${gid})`} stroke={color} strokeWidth="2" />
+      <rect x={x-3} y={y-5} width={w+6} height={8} rx="4" fill={accent} stroke={color} strokeWidth="1.5" opacity="0.5" />
+      {[[0.25,0.4],[0.5,0.35],[0.75,0.45],[0.3,0.6],[0.55,0.55],[0.7,0.65]].map(([px,py],i) => (
+        <circle key={i} cx={x+w*px} cy={y+h*py} r="3.5" fill={color} opacity="0.15" />
+      ))}
+    </g>
+  );
+};
+
+const RStoneRemover = ({ x, y, w, h, color, accent }) => (
+  <g>
+    <rect x={x+2} y={y+4} width={w-4} height={h*0.55} rx="5"
+      fill={accent} stroke={color} strokeWidth="2" opacity="0.5"
+      transform={`rotate(-4,${x+w/2},${y+h*0.3})`} />
+    {[0.22,0.4,0.58,0.76].map((p,i) => (
+      <line key={i} x1={x+w*p} y1={y+8} x2={x+w*p} y2={y+h*0.54}
+        stroke={color} strokeWidth="1" opacity="0.25" transform={`rotate(-4,${x+w/2},${y+h*0.3})`} />
+    ))}
+  </g>
+);
+
+const RAspiration = ({ x, y, w, h, color, accent }) => (
+  <g>
+    <circle cx={x+w/2} cy={y+h*0.45} r={h*0.36} fill={accent} stroke={color} strokeWidth="2" opacity="0.4" />
+    <circle cx={x+w/2} cy={y+h*0.45} r={h*0.24} fill={rc.white} stroke={color} strokeWidth="1.5" opacity="0.6" />
+    {[0,45,90,135,180,225,270,315].map((a,i) => (
+      <line key={i} x1={x+w/2} y1={y+h*0.45}
+        x2={x+w/2+Math.cos(a*Math.PI/180)*h*0.3} y2={y+h*0.45+Math.sin(a*Math.PI/180)*h*0.3}
+        stroke={color} strokeWidth="1.8" opacity="0.3" strokeLinecap="round" />
+    ))}
+    <circle cx={x+w/2} cy={y+h*0.45} r="4" fill={color} opacity="0.3" />
+  </g>
+);
+
+const reqData = [
+  { id:1, name:"Приёмный бункер", sub:"влажного кека", Shape:RHopper, color:rc.blue, accent:rc.blueLight, gx:80, gy:55, sw:110, sh:85 },
+  { id:2, name:"Ленточный транспортёр", sub:"", Shape:RConveyor, color:rc.blue, accent:rc.blueLight, gx:45, gy:205, sw:175, sh:58 },
+  { id:3, name:"Расходный бункер", sub:"сушильной печи", Shape:RHopper, color:rc.blue, accent:rc.blueLight, gx:295, gy:185, sw:85, sh:75 },
+  { id:4, name:"Аспирация", sub:"", Shape:RAspiration, color:rc.purple, accent:rc.purpleLight, gx:535, gy:40, sw:95, sh:75 },
+  { id:5, name:"Барабанная сушильная печь", sub:"предварительной сушки", Shape:RDrumDryer, color:rc.orange, accent:rc.orangeLight, gx:410, gy:182, sw:185, sh:78 },
+  { id:6, name:"Камнеудалитель", sub:"", Shape:RStoneRemover, color:rc.green, accent:rc.greenLight, gx:440, gy:335, sw:120, sh:70 },
+  { id:7, name:"Смеситель", sub:"", Shape:RMixer, color:rc.green, accent:rc.greenLight, gx:275, gy:460, sw:95, sh:92 },
+  { id:8, name:"Узел приготовления", sub:"раствора ЛСТ", Shape:RTank, color:rc.purple, accent:rc.purpleLight, gx:80, gy:460, sw:90, sh:88 },
+  { id:9, name:"Пресс-гранулятор", sub:"шнековый", Shape:RExtruder, color:rc.orange, accent:rc.orangeLight, gx:240, gy:630, sw:160, sh:72 },
+  { id:10, name:"Тоннельная печь", sub:"контрольной сушки", Shape:RTunnelOven, color:rc.orange, accent:rc.orangeLight, gx:240, gy:775, sw:165, sh:65 },
+  { id:11, name:"Групповой циклон", sub:"грубой очистки газа", Shape:RCyclone, color:rc.red, accent:rc.redLight, gx:680, gy:180, sw:100, sh:108 },
+  { id:12, name:"Рукавный фильтр", sub:"тонкой очистки газа", Shape:RBagFilter, color:rc.red, accent:rc.redLight, gx:685, gy:390, sw:95, sh:90 },
+  { id:13, name:"Контейнер", sub:"готовых пеллет", Shape:RContainer, color:rc.green, accent:rc.greenLight, gx:275, gy:910, sw:110, sh:75 },
+];
+
+const RFA = ({ path, color = rc.textTer, dash = false }) => (
+  <path d={path} fill="none" stroke={color} strokeWidth="1.8" strokeDasharray={dash?"7,5":"none"} opacity="0.45"
+    markerEnd={`url(#rarw-${color.replace("#","")})`} />
+);
+
+const RecyclingEquipmentDiagram = ({ hovered, setHovered }) => (
+  <svg viewBox="0 0 860 1060" style={{ width:"100%", minWidth:500, height:"auto" }}>
+    <defs>
+      {[rc.blue,rc.orange,rc.green,rc.red,rc.purple,rc.textTer].map(col => (
+        <marker key={col} id={`rarw-${col.replace("#","")}`} viewBox="0 0 12 8" refX="11" refY="4"
+          markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <polygon points="0 0, 12 4, 0 8" fill={col} opacity="0.6" />
+        </marker>
+      ))}
+      <filter id="reqSh"><feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#000" floodOpacity="0.06" /></filter>
+    </defs>
+    <rect x={30} y={30} width={260} height={310} rx="20" fill={rc.bluePale} opacity="0.5" />
+    <rect x={660} y={160} width={150} height={340} rx="20" fill={rc.redPale} opacity="0.5" />
+    <rect x={220} y={580} width={210} height={300} rx="20" fill={rc.orangePale} opacity="0.5" />
+    <text x={160} y={48} fill={rc.blue} fontSize="10" fontWeight="600" textAnchor="middle" opacity="0.5" letterSpacing="1.5">ПОДАЧА</text>
+    <text x={735} y={178} fill={rc.red} fontSize="10" fontWeight="600" textAnchor="middle" opacity="0.5" letterSpacing="1.5">ГАЗООЧИСТКА</text>
+    <text x={325} y={618} fill={rc.orange} fontSize="10" fontWeight="600" textAnchor="middle" opacity="0.5" letterSpacing="1.5">ГРАНУЛИРОВАНИЕ И СУШКА</text>
+    <RFA path="M135,140 L135,205" color={rc.blue} />
+    <RFA path="M220,234 L295,220" color={rc.blue} />
+    <RFA path="M380,220 L410,220" color={rc.blue} />
+    <RFA path="M545,182 L570,125 L570,115" color={rc.purple} dash />
+    <RFA path="M595,220 L680,220" color={rc.red} dash />
+    <RFA path="M505,260 L500,335" color={rc.orange} />
+    <RFA path="M440,390 L375,460" color={rc.green} />
+    <RFA path="M170,504 L275,504" color={rc.purple} />
+    <RFA path="M322,552 L322,630" color={rc.green} />
+    <RFA path="M322,702 L322,775" color={rc.orange} />
+    <RFA path="M322,840 L325,910" color={rc.green} />
+    <RFA path="M735,288 L735,390" color={rc.red} />
+    <RFA path="M735,480 L735,530" color={rc.green} />
+    {reqData.map(eq => {
+      const isH = hovered === eq.id;
+      return (
+        <g key={eq.id} onMouseEnter={() => setHovered(eq.id)} onMouseLeave={() => setHovered(null)}
+          style={{ cursor:"pointer" }} filter={isH?"url(#reqSh)":undefined} opacity={hovered && !isH ? 0.45 : 1}>
+          <eq.Shape x={eq.gx} y={eq.gy} w={eq.sw} h={eq.sh} color={eq.color} accent={isH?eq.accent:rc.white} hovered={isH} />
+          <circle cx={eq.gx+eq.sw-4} cy={eq.gy+eq.sh-4} r="12" fill={eq.color} opacity={isH?1:0.82} />
+          <text x={eq.gx+eq.sw-4} y={eq.gy+eq.sh} fill="#fff" fontSize="10.5" fontWeight="700" textAnchor="middle">{eq.id}</text>
+          <text x={eq.gx+eq.sw/2} y={eq.gy+eq.sh+20} fill={isH?eq.color:rc.textSec} fontSize="10.5" fontWeight="600" textAnchor="middle">{eq.name}</text>
+          {eq.sub && <text x={eq.gx+eq.sw/2} y={eq.gy+eq.sh+33} fill={rc.textTer} fontSize="9.5" textAnchor="middle">{eq.sub}</text>}
+        </g>
+      );
+    })}
+    <rect x={688} y={532} width={94} height={28} rx="14" fill={rc.greenLight} stroke={rc.green} strokeWidth="1.2" />
+    <text x={735} y={550} fill={rc.green} fontSize="10.5" fontWeight="600" textAnchor="middle">→ в атмосферу</text>
+    <rect x={280} y={1005} width={100} height={28} rx="14" fill={rc.greenLight} stroke={rc.green} strokeWidth="1.2" />
+    <text x={330} y={1023} fill={rc.green} fontSize="10.5" fontWeight="600" textAnchor="middle">→ отгрузка</text>
+    <RFA path="M330,985 L330,1005" color={rc.green} />
+  </svg>
+);
+
+// ─── Recycling Section ────────────────────────────────────────
+function RecyclingSection() {
+  const [hovered, setHovered] = useState(null);
+  return (
+    <div className="space-y-10">
+      {/* Intro */}
+      <div className="bg-gradient-to-br from-green-50 to-white border border-green-200 rounded-2xl p-8">
+        <div className="text-xs font-semibold tracking-widest text-green-600 uppercase mb-3">Токены переработки отходов</div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">Производство пеллет из промышленных отходов</h3>
+        <p className="text-gray-500 leading-relaxed max-w-3xl">
+          Промышленные шламы и технологические отходы могут быть трансформированы в ценные строительные пеллеты через сложную цепочку обработки. Эта технология преобразует затраты на утилизацию отходов в доходные продукты, создавая одновременно экологическую и экономическую ценность.
+        </p>
+      </div>
+
+      {/* Interactive Equipment Diagram */}
+      <div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Схема оборудования</h3>
+        <p className="text-gray-500 text-sm mb-4">Интерактивная диаграмма полной линии производства пеллет. Наведите на оборудование, чтобы выделить его.</p>
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 overflow-x-auto" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
+          <RecyclingEquipmentDiagram hovered={hovered} setHovered={setHovered} />
+        </div>
+        <div className="flex justify-center flex-wrap gap-4 mt-4 text-xs font-medium">
+          {[{color:"#0071e3",label:"Подача и транспорт"},{color:"#e8601c",label:"Сушка и гранулирование"},{color:"#28a745",label:"Обработка и выход"},{color:"#d12e2e",label:"Газоочистка"},{color:"#7b61ff",label:"Вспомогательное"}].map(l => (
+            <div key={l.label} className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full" style={{background:l.color}}></div>
+              <span className="text-gray-500">{l.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Equipment Table */}
+      <div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Перечень оборудования</h3>
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
+          <table style={{ width:"100%", borderCollapse:"collapse", fontSize:13 }}>
+            <tbody>
+              {reqData.map(eq => (
+                <tr key={eq.id} onMouseEnter={() => setHovered(eq.id)} onMouseLeave={() => setHovered(null)}
+                  style={{ background: hovered===eq.id ? eq.accent : "transparent", transition:"background 0.15s", cursor:"pointer", borderBottom:"1px solid #e8e8ed" }}>
+                  <td style={{ padding:"10px 16px", width:48 }}>
+                    <span style={{ display:"inline-flex", alignItems:"center", justifyContent:"center",
+                      width:26, height:26, borderRadius:"50%", background:eq.color, color:"#fff", fontSize:11, fontWeight:700 }}>{eq.id}</span>
+                  </td>
+                  <td style={{ padding:"10px 16px", color: hovered===eq.id ? eq.color : "#1d1d1f", fontWeight:500, transition:"color 0.15s" }}>
+                    {eq.name}{eq.sub ? ` — ${eq.sub}` : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Investment Opportunity */}
+      <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-2xl p-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-3">Инвестиционная возможность</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-emerald-600">ESG+</div>
+            <div className="text-xs text-gray-500 mt-1">Соответствие экологическим требованиям</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-amber-600">24/7</div>
+            <div className="text-xs text-gray-500 mt-1">Непрерывное производство</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">Выручка</div>
+            <div className="text-xs text-gray-500 mt-1">Из отходных материалов</div>
+          </div>
+        </div>
+        <p className="text-sm text-gray-500">Токены переработки отходов предоставляют доступ к растущему сектору промышленного управления отходами. Технология преобразует экологические обязательства в ценные строительные материалы, пользующиеся высоким спросом на инфраструктурные проекты.</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Pre-IPO Section ──────────────────────────────────────────
+function PreIPOSection() {
+  return (
+    <div className="space-y-10">
+      {/* Intro */}
+      <div className="bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 rounded-2xl p-8">
+        <div className="text-xs font-semibold tracking-widest text-indigo-600 uppercase mb-3">Инвестиции в Pre-IPO</div>
+        <h3 className="text-2xl font-bold mb-3">Инвестируйте в частные компании до их выхода на биржу</h3>
+        <p className="text-gray-500 leading-relaxed max-w-3xl">
+          Pre-IPO означает покупку акций или фьючерсов частных компаний на стадии, предшествующей их первичному публичному предложению. Традиционно это было доступно только крупным инвесторам с минимумом $10M+, но современные платформы открыли доступ розничным инвесторам с намного более низкими порогами.
+        </p>
+      </div>
+
+      {/* How It Works Steps */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Как работают Pre-IPO инвестиции</h3>
+        <p className="text-gray-500 text-sm mb-6">Путь от выбора частной компании к получению доходов после IPO.</p>
+        <div className="space-y-4">
+          {[
+            { step: 1, title: "Выбор компании и проверка", desc: "Платформы тщательно отбирают компании с высоким ростом, которые, как ожидается, выйдут на IPO в течение 1-3 лет. Анализ охватывает динамику выручки, раунды финансирования, позицию на рынке и траекторию роста. Проходят только самые привлекательные компании.", color: "indigo" },
+            { step: 2, title: "Приобретение акций", desc: "Акции покупаются на приватном вторичном рынке — у ранних сотрудников, бизнес-ангелов или венчурных фондов, ищущих выхода. Некоторые платформы используют структуры SPV (Специальная цель компании) для объединения капитала инвесторов и приобретения более крупных блоков.", color: "blue" },
+            { step: 3, title: "Ценообразование и торговля", desc: "Маркет-мейкеры устанавливают начальные цены на основе последних приватных рыночных сделок и фундаментальных показателей компании. Инвесторы могут свободно покупать и продавать на платформе, фиксируя прибыль или усредняя позицию в любое время.", color: "violet" },
+            { step: 4, title: "Событие IPO", desc: "Когда компания выходит на биржу, начинается отсчет до истечения фьючерсов (обычно ~200 дней). В этот период акции продаются на публичной бирже по рыночной цене, и выручка распределяется между держателями токенов/фьючерсов.", color: "emerald" },
+            { step: 5, title: "Расчет и доходы", desc: "После периода блокировки (обычно 6 месяцев после IPO) акции могут свободно торговаться. Прибыль рассчитывается на основе разницы между ценой покупки и публичной рыночной ценой при расчете.", color: "amber" },
+          ].map((s, i) => (
+            <div key={i} className="flex gap-5">
+              <div className="flex flex-col items-center">
+                <div className={`w-10 h-10 rounded-full border-2 border-${s.color}-500 bg-white flex items-center justify-center text-sm font-bold text-${s.color}-600`}>{s.step}</div>
+                {i < 4 && <div className="w-0.5 flex-1 bg-gray-200 mt-2"></div>}
+              </div>
+              <div className="flex-1 bg-white border border-gray-200 rounded-xl p-5 mb-1">
+                <h4 className="font-semibold mb-2">{s.title}</h4>
+                <p className="text-sm text-gray-500">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Advantages */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Ключевые преимущества</h3>
+        <p className="text-gray-500 text-sm mb-6">Почему инвесторы привлечены возможностями Pre-IPO.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { icon: "🔓", title: "Доступ к приватным рынкам", desc: "Инвестируйте в компании, такие как Anthropic, SpaceX и Stripe, до их появления на публичных биржах." },
+            { icon: "💰", title: "Более низкие комиссии", desc: "В отличие от специализированных PE-фондов, которые взимают управленческие сборы + сборы за успех, вы платите только комиссии за транзакцию." },
+            { icon: "🎯", title: "Кураторский отбор", desc: "Платформы тщательно проверяют компании, отбирая только самых перспективных кандидатов с сильным потенциалом IPO." },
+            { icon: "🔄", title: "Гибкий выход", desc: "В отличие от традиционных PE блокировок, фьючерсы/токены Pre-IPO можно свободно торговать — не нужно ждать IPO." },
+            { icon: "📊", title: "100% распределение", desc: "В отличие от публичных IPO, где распределение может быть всего 7%, заказы Pre-IPO обычно выполняются полностью." },
+            { icon: "🌍", title: "Глобальный доступ", desc: "Инвестируйте откуда угодно с минимальными требованиями KYC. Пополняйте счета фиатом или криптовалютой." },
+          ].map((a, i) => (
+            <div key={i} className="bg-white border border-gray-200 rounded-xl p-5 hover:-translate-y-0.5 transition">
+              <div className="text-2xl mb-2">{a.icon}</div>
+              <h4 className="text-sm font-semibold mb-1">{a.title}</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Exit Scenarios */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Сценарии выхода</h3>
+        <p className="text-gray-500 text-sm mb-6">Что происходит с вашей инвестицией после изменения статуса компании.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { title: "IPO", desc: "Компания выходит на биржу. После периода блокировки ~6 месяцев акции продаются по рыночной цене и прибыль распределяется. Наиболее распространённый и обычно самый прибыльный выход.", color: "emerald", icon: "🚀" },
+            { title: "M&A (Приобретение)", desc: "Компания приобретается более крупной организацией. Доходы зависят от условий сделки и раунда, на котором вошли инвесторы. Может быть положительным, если приобретено с премией.", color: "blue", icon: "🤝" },
+            { title: "Вторичная/OTC продажа", desc: "Если IPO задержано или отменено, акции могут быть проданы на OTC-рынках. Может привести к более низким доходам или частичным потерям с ~15% затратами на транзакцию для раннего выхода.", color: "amber", icon: "🔄" },
+          ].map((e, i) => (
+            <div key={i} className={`bg-${e.color}-50 border border-${e.color}-200 rounded-xl p-6`}>
+              <div className="text-3xl mb-3">{e.icon}</div>
+              <h4 className="font-semibold mb-2">{e.title}</h4>
+              <p className="text-sm text-gray-500">{e.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Risks */}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Риски для рассмотрения</h3>
+        <p className="text-gray-500 text-sm mb-6">Pre-IPO инвестирование несёт присущие ему риски. Понимание их критически важно перед инвестированием.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { icon: "⏰", title: "Неопределённые сроки", desc: "Компании могут отложить IPO на годы. Нет гарантированной даты листинга, и некоторые могут никогда не выйти на биржу." },
+            { icon: "💧", title: "Низкая ликвидность", desc: "Ранний выход может занять больше месяца. Приватные рынки внутренне менее ликвидны, чем публичные биржи." },
+            { icon: "📋", title: "Асимметрия информации", desc: "Менеджмент и ранние инвесторы имеют больше информации, чем розничные инвесторы. Финансовые раскрытия ограничены." },
+            { icon: "⚠️", title: "Возможна полная потеря", desc: "Pre-IPO по своей природе рискованно. Компании могут потерпеть неудачу, и инвесторы могут потерять всю инвестицию." },
+          ].map((r, i) => (
+            <div key={i} className="bg-red-50 border border-red-200 rounded-xl p-5">
+              <div className="text-2xl mb-2">{r.icon}</div>
+              <h4 className="text-sm font-semibold mb-1">{r.title}</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">{r.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
+        <p className="text-xs text-amber-700"><strong>Дисклеймер:</strong> Pre-IPO инвестиции несут значительный риск. Это содержание предназначено только в образовательных целях. Прошлые результаты не гарантируют будущие результаты. Всегда консультируйтесь с квалифицированным финансовым консультантом перед инвестированием.</p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main App (Open Access) ──────────────────────────────────
 function InvestmentApp() {
   const [user, setUser] = useState(null);
   const [authModal, setAuthModal] = useState(null); // null | "login" | "register"
+  const [currentPage, setCurrentPage] = useState("dashboard");
 
   const handleAuthSwitch = (action) => {
     if (action === "switch-register") setAuthModal("register");
@@ -1200,11 +1992,23 @@ function InvestmentApp() {
 
   return (
     <>
-      <Dashboard
-        user={user}
-        onLogout={() => setUser(null)}
-        onOpenAuth={(mode) => setAuthModal(mode)}
-      />
+      {currentPage === "dashboard" ? (
+        <Dashboard
+          user={user}
+          onLogout={() => setUser(null)}
+          onOpenAuth={(mode) => setAuthModal(mode)}
+          onNavigate={setCurrentPage}
+        />
+      ) : currentPage === "howitworks" ? (
+        <HowItWorksPage onNavigate={setCurrentPage} />
+      ) : (
+        <Dashboard
+          user={user}
+          onLogout={() => setUser(null)}
+          onOpenAuth={(mode) => setAuthModal(mode)}
+          onNavigate={setCurrentPage}
+        />
+      )}
       {authModal && (
         <AuthModal
           mode={authModal}
@@ -1219,7 +2023,11 @@ function InvestmentApp() {
 
 
         // Mount the React app
-        ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(InvestmentApp));
+        try {
+          ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(InvestmentApp));
+        } catch(e) {
+          document.getElementById("root").innerHTML = '<div style="color:red;padding:40px;font-size:18px;background:white;"><h2>Error:</h2><pre>' + e.message + '\n\n' + e.stack + '</pre></div>';
+        }
     </script>
 </body>
 </html>
