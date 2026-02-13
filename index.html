@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="InvestHub — Pre-IPO Investment Offerings Platform">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>InvestHub — Pre-IPO Investment Offerings</title>
+    
+    <!-- Favicon SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23000'/><path d='M8 16L16 8L24 16M16 8V24' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    
+    <!-- React 18 Production -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <!-- ReactDOM 18 Production -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <!-- Lucide React -->
+    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div id="root"></div>
+    
+    <script type="text/babel">
+const { useState, useMemo } = React;
+const { Search, TrendingUp, TrendingDown, ArrowLeft, ArrowRight, X, DollarSign, Building2, BarChart3, Shield, ChevronRight, ExternalLink, User, Mail, Lock, Eye, EyeOff, Check, Upload, Briefcase, Target, AlertTriangle, LogOut, FileText } = LucideReact;
+
+// ─── Company Logo SVGs (inline, always load) ─────────────────
+const companyLogoSVGs = {
+  anthropic: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#D4A27F"/><path d="M20 8L28 28H24L22 23H18L16 28H12L20 8ZM20 14L17.5 21H22.5L20 14Z" fill="white"/></svg>`,
+  spacex: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#005288"/><path d="M10 11H15L20 18.5L25 11H30L23 21L30 31H25L20 23.5L15 31H10L17 21L10 11Z" fill="white"/></svg>`,
+  stripe: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#635BFF"/><path d="M18.5 15.5C18.5 14.5 19.3 14 20.5 14C22.2 14 24.2 14.7 25.5 15.5V10.8C24.1 10.3 22.7 10 20.5 10C16.4 10 13.5 12.4 13.5 16C13.5 21.5 21 20.2 21 22.8C21 23.9 20 24.5 18.7 24.5C16.8 24.5 14.6 23.6 13.2 22.6V27.4C14.8 28.2 16.4 28.5 18.7 28.5C22.9 28.5 26 26.2 26 22.5C26 16.5 18.5 18 18.5 15.5Z" fill="white"/></svg>`,
+  databricks: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#FF3621"/><path d="M20 8L30 14V20L20 26L10 20V14L20 8Z" fill="white" opacity="0.9"/><path d="M20 20L30 26V28L20 34L10 28V26L20 20Z" fill="white" opacity="0.6"/></svg>`,
+  canva: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#00C4CC"/><circle cx="20" cy="20" r="10" fill="white" opacity="0.9"/><circle cx="20" cy="20" r="5" fill="#00C4CC"/><circle cx="20" cy="12" r="2" fill="#7D2AE8"/><circle cx="26" cy="16" r="2" fill="#00C4CC"/><circle cx="26" cy="24" r="2" fill="#FFD966"/><circle cx="14" cy="16" r="2" fill="#FF6384"/></svg>`,
+  discord: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#5865F2"/><path d="M27 13.5C25.7 12.9 24.3 12.5 22.8 12.3C22.6 12.7 22.4 13.1 22.2 13.5C20.7 13.3 19.3 13.3 17.8 13.5C17.6 13.1 17.4 12.7 17.2 12.3C15.7 12.5 14.3 12.9 13 13.5C10.5 17.4 9.8 21.2 10.2 24.9C11.8 26.1 13.4 26.8 14.9 27.3C15.3 26.7 15.7 26.1 16 25.5C15.4 25.3 14.8 25 14.3 24.6C14.4 24.5 14.6 24.4 14.7 24.3C17.9 25.8 22.1 25.8 25.3 24.3C25.4 24.4 25.6 24.5 25.7 24.6C25.2 25 24.6 25.3 24 25.5C24.3 26.1 24.7 26.7 25.1 27.3C26.6 26.8 28.2 26.1 29.8 24.9C30.3 20.6 29.1 16.8 27 13.5ZM16.4 23C15.5 23 14.7 22.1 14.7 21C14.7 19.9 15.4 19 16.4 19C17.3 19 18.1 19.9 18.1 21C18.1 22.1 17.3 23 16.4 23ZM23.6 23C22.7 23 21.9 22.1 21.9 21C21.9 19.9 22.6 19 23.6 19C24.5 19 25.3 19.9 25.3 21C25.3 22.1 24.5 23 23.6 23Z" fill="white"/></svg>`,
+  anduril: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#1A1A2E"/><path d="M20 8L24 16L32 18L26 24L27 32L20 28L13 32L14 24L8 18L16 16L20 8Z" fill="white" opacity="0.9"/></svg>`,
+  revolut: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#0075EB"/><path d="M14 10H22C25.3 10 28 12.7 28 16C28 18.5 26.5 20.6 24.3 21.5L29 30H24L19.7 22H18V30H14V10ZM18 18H22C23.1 18 24 17.1 24 16C24 14.9 23.1 14 22 14H18V18Z" fill="white"/></svg>`,
+  "epic-games": `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#2F2D2E"/><path d="M12 10H28V14H16V18H26V22H16V26H28V30H12V10Z" fill="white"/></svg>`,
+  plaid: `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#111111"/><rect x="10" y="10" width="6" height="6" rx="1" fill="white" opacity="0.9"/><rect x="17" y="10" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="24" y="10" width="6" height="6" rx="1" fill="white" opacity="0.3"/><rect x="10" y="17" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="17" y="17" width="6" height="6" rx="1" fill="white" opacity="0.9"/><rect x="24" y="17" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="10" y="24" width="6" height="6" rx="1" fill="white" opacity="0.3"/><rect x="17" y="24" width="6" height="6" rx="1" fill="white" opacity="0.6"/><rect x="24" y="24" width="6" height="6" rx="1" fill="white" opacity="0.9"/></svg>`,
+};
+
+function CompanyLogo({ company, size = 48, className = "" }) {
+  const svg = companyLogoSVGs[company.id];
+  if (svg) {
+    return <div className={className} style={{width: size, height: size, flexShrink: 0}} dangerouslySetInnerHTML={{__html: svg}} />;
+  }
+  return (
+    <div className={`rounded-xl flex items-center justify-center font-bold text-white ${className}`} style={{width: size, height: size, flexShrink: 0, background: company.color || '#6366f1', fontSize: size * 0.4}}>
+      {company.name[0]}
+    </div>
+  );
+}
+
+// ─── Demo Data ────────────────────────────────────────────────
+const companies = [
+  {
+    id: "anthropic", name: "Anthropic", ticker: "UTANTH", tagline: "AI safety leader building the future of intelligence", category: "Pre-IPO",
+    color: "#D4A27F", founded: "2021", hq: "San Francisco, CA", founders: "Dario Amodei, Daniela Amodei", sector: "Artificial Intelligence", highlights: ["10x revenue growth in 18 months", "120M+ monthly active users", "$5B+ cash reserves", "Strategic partnerships with Amazon & Google"],
+    markPrice: 156.80, annualChange: 478, valuation: "$61.5B", valuationNum: 61.5e9, fundsRaised: "$13.70B", lastRound: "$2.00B", roundDate: "2025",
+    about: `Anthropic is an AI safety company building reliable, interpretable, and steerable AI systems. Founded in 2021 by Dario and Daniela Amodei — former VP of Research and VP of Safety at OpenAI — along with a team of leading AI researchers, Anthropic has rapidly emerged as one of the most important companies in the artificial intelligence industry.\n\nThe company's flagship product, Claude, is a family of large language models known for their helpfulness, harmlessness, and honesty. Claude is used by millions of consumers and enterprises worldwide, powering everything from coding assistance and research analysis to customer service automation and creative workflows. Anthropic's proprietary Constitutional AI (CAI) training methodology and Responsible Scaling Policy set the standard for safe AI development.\n\nAnthropic operates a massive compute infrastructure with custom training clusters, and has strategic partnerships with Amazon Web Services (AWS) and Google Cloud. The company employs 1,500+ researchers and engineers, many considered among the top AI talent globally.`,
+    opportunities: `The global AI market is projected to reach $1.8T by 2030, growing at 37% CAGR. Anthropic is uniquely positioned at the intersection of capability and safety — the two most critical dimensions of AI development.\n\nEnterprise adoption is accelerating: Claude is deployed across Fortune 500 companies in finance, healthcare, legal, and technology sectors. The Claude API processes billions of tokens daily with enterprise revenue growing 8x year-over-year. Key growth vectors include Claude for Enterprise (team collaboration), Claude Code (developer tools), the Anthropic API platform, and strategic OEM partnerships.\n\nAnthropic's $4B partnership with Amazon and $2B investment from Google provide massive distribution advantages through AWS Bedrock and Google Cloud Vertex AI. Government contracts for AI safety consulting and secure deployments represent an emerging high-margin revenue stream.`,
+    financials: `Anthropic's annualized revenue run rate exceeded $2B in early 2025, up from $200M in 2023 — a 10x increase in under 18 months. The company is on track to reach $4B+ ARR by end of 2025.\n\nGross margins are estimated at 50-55%, with significant operating leverage as the model training costs amortize across a rapidly growing user base. Revenue mix is shifting toward enterprise (65%) and API (25%), with consumer subscriptions at 10%.\n\nTotal funding raised: $13.7B across multiple rounds. The most recent round in early 2025 valued the company at $61.5B, led by Lightspeed Venture Partners with participation from Salesforce Ventures, Menlo Ventures, and existing investors. Strategic investors include Amazon ($4B commitment), Google ($2B), and Spark Capital. The company maintains $5B+ in cash reserves.`,
+    risks: `Intense competition from OpenAI, Google DeepMind, Meta AI, and emerging Chinese AI labs (DeepSeek, Zhipu). The AI foundation model market may commoditize, pressuring margins. Regulatory uncertainty — pending AI legislation in the EU, US, and China could impose compliance costs or restrict capabilities.\n\nHigh capital expenditure requirements: training frontier models costs $500M-$1B+ per run, requiring continuous fundraising or path to profitability. Talent retention is critical as top AI researchers are heavily recruited. Dependence on cloud providers (AWS, Google) for compute creates strategic vulnerability. Low liquidity typical of pre-IPO investments.`,
+    analytics: {
+      revenueHistory: [
+        { period: "Q1 2023", value: 40 }, { period: "Q2 2023", value: 75 }, { period: "Q3 2023", value: 150 }, { period: "Q4 2023", value: 280 },
+        { period: "Q1 2024", value: 450 }, { period: "Q2 2024", value: 680 }, { period: "Q3 2024", value: 960 }, { period: "Q4 2024", value: 1400 },
+        { period: "Q1 2025", value: 2100 },
+      ],
+      valuationHistory: [
+        { round: "Series A (2021)", value: 1, investors: "Jaan Tallinn, Dustin Moskovitz" },
+        { round: "Series B (2022)", value: 4.1, investors: "Spark Capital, Google" },
+        { round: "Series C (2023)", value: 18.4, investors: "Google, Spark Capital, Salesforce" },
+        { round: "Series D (2023)", value: 25, investors: "Amazon ($4B commitment)" },
+        { round: "Series E (2024)", value: 40, investors: "Menlo Ventures, Amazon, Google" },
+        { round: "Series F (2025)", value: 61.5, investors: "Lightspeed, Salesforce Ventures" },
+      ],
+      keyMetrics: [
+        { label: "API Tokens/Day", value: "45B+", change: "+320% YoY", positive: true },
+        { label: "Enterprise Clients", value: "12,500+", change: "+650% YoY", positive: true },
+        { label: "Gross Margin", value: "53%", change: "+8pp YoY", positive: true },
+        { label: "Net Revenue Retention", value: "185%", change: "+40pp YoY", positive: true },
+        { label: "Employees", value: "1,500+", change: "+110% YoY", positive: true },
+        { label: "Monthly Active Users", value: "120M+", change: "+400% YoY", positive: true },
+      ],
+      marketShare: [
+        { name: "OpenAI", share: 34 },
+        { name: "Anthropic", share: 22 },
+        { name: "Google", share: 18 },
+        { name: "Meta", share: 12 },
+        { name: "Others", share: 14 },
+      ],
+      competitiveEdge: [
+        { area: "Safety & Alignment", score: 96, avg: 62 },
+        { area: "Enterprise Adoption", score: 88, avg: 70 },
+        { area: "Research Output", score: 91, avg: 68 },
+        { area: "Developer Experience", score: 85, avg: 72 },
+        { area: "Model Capability", score: 93, avg: 78 },
+      ]
+    }
+  },
+  {
+    id: "spacex", name: "SpaceX", ticker: "UTSPX", tagline: "Revolutionary in the space industry", category: "Pre-IPO",
+    color: "#005288", founded: "2002", hq: "Hawthorne, CA", founders: "Elon Musk", sector: "Aerospace & Defense", highlights: ["250+ successful missions", "5,000+ Starlink satellites", "$127B valuation", "NASA Artemis lunar lander contract"],
+    markPrice: 61, annualChange: 326, valuation: "$127B", valuationNum: 127e9, fundsRaised: "$8.60B", lastRound: "$1.70B", roundDate: "2022",
+    about: `SpaceX designs, manufactures and launches advanced rockets and spacecraft. Founded in 2002 by Elon Musk with the goal of making humanity multiplanetary, SpaceX has pioneered reusable rocket technology and completed over 250 successful missions.\n\nThe company operates Starlink, a satellite internet constellation with 5,000+ satellites providing broadband coverage in 60+ countries. SpaceX is also developing Starship, a fully reusable super-heavy launch vehicle designed for missions to the Moon and Mars.`,
+    opportunities: "Moon Markets Analysis forecasts 140+ Moon Missions over the next decade generating $42.3B in revenue. NASA awarded SpaceX the contract to build the Artemis lunar lander. Starlink is projected to reach $10B+ annual recurring revenue by 2025.",
+    financials: "SpaceX's last publicly reported revenue exceeded $4.6B. Starlink alone generates $2B+ in recurring revenue. The company has raised a total of $9.5B across multiple funding rounds. Key investors include NASA, Baillie Gifford, Bank of America, Fidelity, Google, and Founders Fund.",
+    risks: "Competition from Amazon's Project Kuiper satellite network. Regulatory challenges with Starship launches. Revenue concentration in government contracts. Low liquidity typical of pre-IPO investments — early exits may result in significant price differences."
+  },
+  {
+    id: "stripe", name: "Stripe", ticker: "UTSTRP", tagline: "Global payments infrastructure platform", category: "Pre-IPO",
+    color: "#635BFF", founded: "2010", hq: "San Francisco, CA", founders: "Patrick & John Collison", sector: "Financial Technology", highlights: ["$14B+ annual revenue", "Profitable since 2023", "46+ countries", "Hundreds of billions processed annually"],
+    markPrice: 27.50, annualChange: 48, valuation: "$65B", valuationNum: 65e9, fundsRaised: "$8.70B", lastRound: "$6.50B", roundDate: "2023",
+    about: `Stripe is a financial infrastructure platform for the internet. Millions of companies — from startups to Fortune 500s — use Stripe to accept payments, grow their revenue, and accelerate new business opportunities.\n\nFounded in 2010 by Patrick and John Collison, Stripe processes hundreds of billions of dollars annually and operates in 46+ countries.`,
+    opportunities: "Global digital payments market projected to reach $14.8T by 2027. Stripe's expansion into banking-as-a-service, lending, and corporate cards opens massive new revenue streams.",
+    financials: "Stripe achieved profitability in 2023. Revenue exceeded $14B in 2023 with strong gross margins. The company raised $6.5B at a $50B valuation in March 2023.",
+    risks: "Intense competition from PayPal, Adyen, and Square. Regulatory complexity across multiple jurisdictions. Potential margin pressure from interchange fee regulations."
+  },
+  {
+    id: "databricks", name: "Databricks", ticker: "UTDBRK", tagline: "Unified analytics and AI platform", category: "Pre-IPO",
+    color: "#FF3621", founded: "2013", hq: "San Francisco, CA", founders: "Ali Ghodsi, et al.", sector: "Data & Analytics", highlights: ["$1.6B ARR, 50%+ YoY growth", "10,000+ enterprise customers", "Created Apache Spark", "Lakehouse architecture standard"],
+    markPrice: 45.20, annualChange: 72, valuation: "$43B", valuationNum: 43e9, fundsRaised: "$4.20B", lastRound: "$500M", roundDate: "2023",
+    about: `Databricks provides a unified set of tools for building, deploying, sharing, and maintaining enterprise-grade data, analytics, and AI solutions at scale.\n\nFounded in 2013 by the original creators of Apache Spark, Databricks serves 10,000+ organizations worldwide.`,
+    opportunities: "Enterprise AI adoption is accelerating. The data analytics market is expected to exceed $100B by 2026.",
+    financials: "Databricks reached $1.6B in annualized revenue in 2023, growing 50%+ year-over-year. Investors include Andreessen Horowitz, T. Rowe Price, and Morgan Stanley.",
+    risks: "Competition from Snowflake, AWS, Google BigQuery, and Microsoft Fabric. Customer concentration risk. High burn rate despite strong revenue growth."
+  },
+  {
+    id: "canva", name: "Canva", ticker: "UTCNVA", tagline: "Visual communication and design platform", category: "Pre-IPO",
+    color: "#00C4CC", founded: "2013", hq: "Sydney, Australia", founders: "Melanie Perkins", sector: "Design & Collaboration", highlights: ["150M+ monthly active users", "Profitable since 2022", "190 countries", "$2.1B annual revenue"],
+    markPrice: 31.80, annualChange: 22, valuation: "$26B", valuationNum: 26e9, fundsRaised: "$572M", lastRound: "$200M", roundDate: "2021",
+    about: `Canva is an online design and visual communication platform with a mission to empower everyone in the world to design.\n\nFounded in 2013 in Sydney, Australia, Canva now has 150+ million monthly active users across 190 countries.`,
+    opportunities: "Visual communication market growing rapidly with remote work. Enterprise tier showing strong adoption. AI features driving engagement.",
+    financials: "Canva reached $2.1B in annualized revenue in 2023. The company has been profitable since 2022. Investors include Sequoia, Blackbird Ventures, and T. Rowe Price.",
+    risks: "Competition from Adobe (Express), Microsoft (Designer), and Figma. Free-to-paid conversion rates. Market saturation in consumer segment."
+  },
+  {
+    id: "discord", name: "Discord", ticker: "UTDCRD", tagline: "Communication platform for communities", category: "Pre-IPO",
+    color: "#5865F2", founded: "2015", hq: "San Francisco, CA", founders: "Jason Citron", sector: "Communication", highlights: ["200M+ monthly active users", "$600M revenue", "App marketplace ecosystem", "Expanding beyond gaming"],
+    markPrice: 18.40, annualChange: -5, valuation: "$15B", valuationNum: 15e9, fundsRaised: "$995M", lastRound: "$500M", roundDate: "2021",
+    about: `Discord is a voice, video, and text communication platform originally built for gamers that has expanded into a general-purpose community hub.\n\nFounded in 2015, Discord has grown to 200+ million monthly active users.`,
+    opportunities: "Community platform market is growing rapidly. Enterprise and education use cases expanding. App marketplace creating platform lock-in.",
+    financials: "Discord generated approximately $600M in revenue in 2023. The company has not yet reached profitability. Last valued at $15B in 2021.",
+    risks: "Profitability concerns with high infrastructure costs. Competition from Slack, Teams, and emerging platforms. Content moderation challenges."
+  },
+  {
+    id: "anduril", name: "Anduril Industries", ticker: "UTANDL", tagline: "AI-powered defense technology", category: "Pre-IPO",
+    color: "#1A1A2E", founded: "2017", hq: "Costa Mesa, CA", founders: "Palmer Luckey", sector: "Defense Technology", highlights: ["$500M+ revenue", "Lattice AI platform", "Counter-drone leader", "Founded by Oculus VR creator"],
+    markPrice: 52.60, annualChange: 115, valuation: "$14B", valuationNum: 14e9, fundsRaised: "$2.80B", lastRound: "$1.50B", roundDate: "2023",
+    about: `Anduril Industries is a defense technology company that builds autonomous systems and AI-powered platforms for national security.\n\nFounded in 2017 by Palmer Luckey (Oculus VR founder), Anduril develops autonomous drones, counter-drone systems, and surveillance towers.`,
+    opportunities: "U.S. defense budget exceeding $800B annually with increasing focus on autonomous systems. Counter-drone market expected to reach $7.6B by 2027.",
+    financials: "Anduril's revenue is estimated at $500M+ in 2023. The company raised $1.5B at a $14B valuation in 2023.",
+    risks: "Government contract dependency and procurement cycles. Political sensitivity around autonomous weapons. Competition from Lockheed, Raytheon."
+  },
+  {
+    id: "revolut", name: "Revolut", ticker: "UTRVLT", tagline: "Global financial super-app", category: "Pre-IPO",
+    color: "#0075EB", founded: "2015", hq: "London, UK", founders: "Nikolay Storonsky", sector: "Financial Technology", highlights: ["35M+ customers", "95% YoY revenue growth", "First profitable year in 2023", "Banking license in UK"],
+    markPrice: 35.00, annualChange: 89, valuation: "$33B", valuationNum: 33e9, fundsRaised: "$1.70B", lastRound: "$800M", roundDate: "2021",
+    about: `Revolut is a global financial super-app offering banking, crypto trading, stock trading, money transfers, insurance, and more.\n\nFounded in 2015 in London, Revolut serves 35+ million personal customers across 38 countries.`,
+    opportunities: "Global neobank market projected to reach $722B by 2028. Revenue diversification across payments, crypto, trading, and lending.",
+    financials: "Revolut reported £1.8B in revenue for 2023, up 95% year-over-year, with its first full year of profitability.",
+    risks: "Regulatory complexity across 38 countries. Competition from traditional banks and other neobanks. Crypto revenue volatility."
+  },
+  {
+    id: "epic-games", name: "Epic Games", ticker: "UTEPIC", tagline: "Gaming and metaverse technology creator", category: "Pre-IPO",
+    color: "#2F2D2E", founded: "1991", hq: "Cary, NC", founders: "Tim Sweeney", sector: "Gaming & Entertainment", highlights: ["400M+ Fortnite players", "$5.6B estimated revenue", "Unreal Engine industry standard", "$1.5B Disney metaverse deal"],
+    markPrice: 22.10, annualChange: 15, valuation: "$32B", valuationNum: 32e9, fundsRaised: "$6.40B", lastRound: "$2.00B", roundDate: "2022",
+    about: `Epic Games is the creator of Fortnite with 400M+ registered players and develops Unreal Engine, the industry-standard game development platform.\n\nFounded in 1991 by Tim Sweeney, Epic also operates the Epic Games Store competing with Steam.`,
+    opportunities: "Fortnite's live service model generates billions annually. Unreal Engine 5 adoption across industries. Metaverse opportunities.",
+    financials: "Epic Games generated an estimated $5.6B in revenue in 2023. Disney invested $1.5B in an Epic Games metaverse venture.",
+    risks: "Revenue concentration in Fortnite. Ongoing antitrust litigation with Apple and Google. Epic Games Store profitability concerns."
+  },
+  {
+    id: "plaid", name: "Plaid", ticker: "UTPLAD", tagline: "Financial data connectivity network", category: "Pre-IPO",
+    color: "#111111", founded: "2013", hq: "San Francisco, CA", founders: "Zach Perret, William Hockey", sector: "Financial Infrastructure", highlights: ["$500M+ annual revenue", "12,000+ connected institutions", "8,000+ fintech clients", "Visa tried to acquire for $5.3B"],
+    markPrice: 16.50, annualChange: 32, valuation: "$13.4B", valuationNum: 13.4e9, fundsRaised: "$734M", lastRound: "$425M", roundDate: "2021",
+    about: `Plaid is a financial data network powering the tools millions of people rely on. The platform connects to 12,000+ financial institutions.\n\nFounded in 2013, Plaid is used by 8,000+ fintech companies including Venmo, Coinbase, and Betterment.`,
+    opportunities: "Open banking regulations expanding globally. Growing fintech ecosystem requires financial data infrastructure. Network effects strengthen with each new connection.",
+    financials: "Plaid generates an estimated $500M+ in annual revenue. The Visa acquisition at $5.3B was blocked by DOJ in 2021. Subsequently raised at $13.4B valuation.",
+    risks: "Regulatory changes could enable direct bank-to-fintech connections. Competition from MX, Yodlee, and bank-built APIs. Data privacy scrutiny."
+  }
+];
+
+// ─── Shared UI Components ─────────────────────────────────────
+
+function Badge({ children, variant = "default" }) {
+  const base = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium";
+  const variants = {
+    default: "bg-indigo-50 text-indigo-700",
+    green: "bg-emerald-50 text-emerald-700",
+    red: "bg-red-50 text-red-700",
+  };
+  return <span className={`${base} ${variants[variant]}`}>{children}</span>;
+}
+
+function PriceChange({ value }) {
+  const positive = value >= 0;
+  return (
+    <span className={`inline-flex items-center gap-0.5 text-sm font-semibold ${positive ? "text-emerald-600" : "text-red-500"}`}>
+      {positive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+      {positive ? "+" : ""}{value}%
+    </span>
+  );
+}
+
+function InputField({ icon: Icon, label, type = "text", value, onChange, placeholder, error, ...rest }) {
+  const [showPw, setShowPw] = useState(false);
+  const isPassword = type === "password";
+
+  return (
+    <div>
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>}
+      <div className="relative">
+        {Icon && <Icon size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />}
+        <input
+          type={isPassword && showPw ? "text" : type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`w-full ${Icon ? "pl-10" : "pl-4"} ${isPassword ? "pr-10" : "pr-4"} py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition ${error ? "border-red-300 bg-red-50" : "border-gray-200"}`}
+          {...rest}
+        />
+        {isPassword && (
+          <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+            {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        )}
+      </div>
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+    </div>
+  );
+}
+
+function SelectField({ icon: Icon, label, value, onChange, options, error }) {
+  return (
+    <div>
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>}
+      <div className="relative">
+        {Icon && <Icon size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />}
+        <select
+          value={value}
+          onChange={onChange}
+          className={`w-full ${Icon ? "pl-10" : "pl-4"} pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition appearance-none bg-white cursor-pointer ${error ? "border-red-300 bg-red-50" : "border-gray-200"}`}
+        >
+          {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      </div>
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+    </div>
+  );
+}
+
+// ─── Step Indicator ───────────────────────────────────────────
+function StepIndicator({ steps, current }) {
+  return (
+    <div className="flex items-center justify-center gap-2 mb-8">
+      {steps.map((step, i) => {
+        const done = i < current;
+        const active = i === current;
+        return (
+          <div key={i} className="flex items-center gap-2">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+              done ? "bg-indigo-600 text-white" : active ? "bg-indigo-600 text-white ring-4 ring-indigo-100" : "bg-gray-100 text-gray-400"
+            }`}>
+              {done ? <Check size={14} /> : i + 1}
+            </div>
+            <span className={`text-xs font-medium hidden sm:block ${active ? "text-indigo-600" : done ? "text-gray-700" : "text-gray-400"}`}>
+              {step}
+            </span>
+            {i < steps.length - 1 && (
+              <div className={`w-8 h-0.5 rounded ${done ? "bg-indigo-600" : "bg-gray-200"}`} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Registration step labels
+const REG_STEPS = ["Account", "Investor Profile", "Verification", "Complete"];
+
+// ─── Trade Modal ──────────────────────────────────────────────
+function TradeModal({ company, mode, onClose }) {
+  const [amount, setAmount] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const isBuy = mode === "buy";
+  const shares = amount ? (parseFloat(amount) / company.markPrice).toFixed(4) : "0";
+
+  if (submitted) {
+    return (
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center" onClick={e => e.stopPropagation()}>
+          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Order Submitted!</h3>
+          <p className="text-gray-500 mb-2">{isBuy ? "Buy" : "Sell"} {shares} shares of {company.name}</p>
+          <p className="text-2xl font-bold text-gray-900 mb-6">${parseFloat(amount).toLocaleString()}</p>
+          <p className="text-xs text-gray-400 mb-6">This is a demo — no real transaction was made.</p>
+          <button onClick={onClose} className="w-full py-3 rounded-xl font-semibold text-white bg-gray-900 hover:bg-gray-800 transition">Done</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden" onClick={e => e.stopPropagation()}>
+        <div className={`px-6 py-4 flex items-center justify-between ${isBuy ? "bg-indigo-600" : "bg-rose-600"}`}>
+          <h3 className="text-lg font-bold text-white">{isBuy ? "Buy" : "Sell"} {company.name}</h3>
+          <button onClick={onClose} className="text-white/70 hover:text-white transition"><X size={20} /></button>
+        </div>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-xl">
+            <div>
+              <p className="text-sm text-gray-500">Current Price</p>
+              <p className="text-2xl font-bold text-gray-900">${company.markPrice.toFixed(2)}</p>
+            </div>
+            <PriceChange value={company.annualChange} />
+          </div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Amount (USD)</label>
+          <div className="relative mb-2">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><DollarSign size={18} /></span>
+            <input type="number" min="0" step="0.01" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+          </div>
+          <div className="flex gap-2 mb-4">
+            {[100, 500, 1000, 5000].map(v => (
+              <button key={v} onClick={() => setAmount(String(v))} className="flex-1 py-1.5 text-xs font-medium rounded-lg border border-gray-200 hover:border-indigo-400 hover:text-indigo-600 transition">
+                ${v.toLocaleString()}
+              </button>
+            ))}
+          </div>
+          {amount && parseFloat(amount) > 0 && (
+            <div className="p-4 bg-gray-50 rounded-xl mb-6 space-y-2">
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Estimated Shares</span><span className="font-semibold text-gray-900">{shares}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Price per Share</span><span className="font-semibold text-gray-900">${company.markPrice.toFixed(2)}</span></div>
+              <div className="flex justify-between text-sm border-t border-gray-200 pt-2 mt-2"><span className="text-gray-500">Total</span><span className="font-bold text-gray-900">${parseFloat(amount).toLocaleString()}</span></div>
+            </div>
+          )}
+          <button disabled={!amount || parseFloat(amount) <= 0} onClick={() => setSubmitted(true)}
+            className={`w-full py-3.5 rounded-xl font-semibold text-white transition disabled:opacity-40 disabled:cursor-not-allowed ${isBuy ? "bg-indigo-600 hover:bg-indigo-700" : "bg-rose-600 hover:bg-rose-700"}`}>
+            {isBuy ? "Place Buy Order" : "Place Sell Order"}
+          </button>
+          <p className="text-xs text-gray-400 text-center mt-3">Demo mode — no real transactions</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Company Card ─────────────────────────────────────────────
+function CompanyCard({ company, onClick, user, onOpenAuth }) {
+  const [trade, setTrade] = useState(null);
+
+  const handleTrade = (mode) => {
+    if (!user) { onOpenAuth("register"); return; }
+    setTrade(mode);
+  };
+
+  return (
+    <>
+      <div className="group bg-white rounded-2xl border border-gray-100 hover:border-indigo-200 hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden" onClick={() => onClick(company.id)}>
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <CompanyLogo company={company} size={48} className="group-hover:scale-110 transition-transform" />
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg">{company.name}</h3>
+                <p className="text-gray-400 text-sm">{company.ticker}</p>
+              </div>
+            </div>
+            <Badge>{company.category}</Badge>
+          </div>
+          <p className="text-gray-500 text-sm mb-5 line-clamp-1">{company.tagline}</p>
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div><p className="text-xs text-gray-400 mb-0.5">Mark Price</p><p className="text-xl font-bold text-gray-900">${company.markPrice.toFixed(2)}</p></div>
+            <div className="text-right"><p className="text-xs text-gray-400 mb-0.5">Annual Change</p><PriceChange value={company.annualChange} /></div>
+          </div>
+          <div className="flex items-center justify-between pt-4 border-t border-gray-50">
+            <div><p className="text-xs text-gray-400">Valuation</p><p className="text-sm font-semibold text-gray-700">{company.valuation}</p></div>
+            <div className="flex gap-2" onClick={e => e.stopPropagation()}>
+              <button onClick={() => handleTrade("buy")} className="px-4 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition">Buy</button>
+              <button onClick={() => handleTrade("sell")} className="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800 transition">Sell</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {trade && <TradeModal company={company} mode={trade} onClose={() => setTrade(null)} />}
+    </>
+  );
+}
+
+// ─── Analytics Dashboard ──────────────────────────────────────
+function AnalyticsDashboard({ analytics, companyName }) {
+  const maxRevenue = Math.max(...analytics.revenueHistory.map(r => r.value));
+  const maxValuation = Math.max(...analytics.valuationHistory.map(v => v.value));
+
+  return (
+    <div className="space-y-8">
+      {/* Key Metrics Grid */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Key Performance Metrics</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {analytics.keyMetrics.map((m, i) => (
+            <div key={i} className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+              <p className="text-xs text-gray-400 mb-1">{m.label}</p>
+              <p className="text-xl font-bold text-gray-900">{m.value}</p>
+              <span className={`text-xs font-semibold ${m.positive ? "text-emerald-600" : "text-red-500"}`}>{m.change}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Revenue Growth Chart */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">Revenue Growth (ARR, $M)</h3>
+        <p className="text-sm text-gray-400 mb-4">Quarterly annualized run rate</p>
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div className="flex items-end gap-1.5" style={{ height: 180 }}>
+            {analytics.revenueHistory.map((r, i) => {
+              const height = (r.value / maxRevenue) * 100;
+              return (
+                <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
+                  <span className="text-xs font-bold text-gray-900 opacity-0 group-hover:opacity-100 transition">${r.value >= 1000 ? `${(r.value/1000).toFixed(1)}B` : `${r.value}M`}</span>
+                  <div
+                    className="w-full rounded-t-md bg-gradient-to-t from-indigo-600 to-indigo-400 group-hover:from-indigo-700 group-hover:to-indigo-500 transition-all relative"
+                    style={{ height: `${height}%`, minHeight: 4 }}
+                  />
+                  <span className="text-xs text-gray-400 -rotate-45 origin-top-left mt-1 whitespace-nowrap">{r.period.replace("20","'")}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Valuation Timeline */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">Valuation History</h3>
+        <p className="text-sm text-gray-400 mb-4">From seed to latest round</p>
+        <div className="space-y-3">
+          {analytics.valuationHistory.map((v, i) => (
+            <div key={i} className="flex items-center gap-4">
+              <div className="w-36 sm:w-44 flex-shrink-0">
+                <p className="text-sm font-semibold text-gray-900">{v.round}</p>
+                <p className="text-xs text-gray-400">{v.investors}</p>
+              </div>
+              <div className="flex-1 relative h-8">
+                <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-lg flex items-center transition-all"
+                  style={{ width: `${(v.value / maxValuation) * 100}%`, minWidth: 40 }}>
+                  <span className="text-xs font-bold text-white pl-3 whitespace-nowrap">${v.value}B</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Market Share */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">AI Foundation Model Market Share</h3>
+        <p className="text-sm text-gray-400 mb-4">Enterprise API revenue, estimated 2025</p>
+        <div className="flex rounded-xl overflow-hidden h-10 border border-gray-100">
+          {analytics.marketShare.map((m, i) => {
+            const colors = ["bg-gray-700", "bg-indigo-600", "bg-blue-500", "bg-emerald-500", "bg-gray-300"];
+            const textColors = ["text-white", "text-white", "text-white", "text-white", "text-gray-600"];
+            return (
+              <div key={i} className={`${colors[i]} flex items-center justify-center transition-all hover:opacity-90`} style={{ width: `${m.share}%` }}>
+                <span className={`text-xs font-bold ${textColors[i]} ${m.share < 15 ? "hidden sm:inline" : ""}`}>{m.name} {m.share}%</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex flex-wrap gap-3 mt-3">
+          {analytics.marketShare.map((m, i) => {
+            const dots = ["bg-gray-700", "bg-indigo-600", "bg-blue-500", "bg-emerald-500", "bg-gray-300"];
+            return (
+              <div key={i} className="flex items-center gap-1.5">
+                <div className={`w-2.5 h-2.5 rounded-full ${dots[i]}`} />
+                <span className="text-xs text-gray-600">{m.name} ({m.share}%)</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Competitive Edge */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">Competitive Positioning</h3>
+        <p className="text-sm text-gray-400 mb-4">{companyName} vs. industry average (analyst consensus)</p>
+        <div className="space-y-4">
+          {analytics.competitiveEdge.map((c, i) => (
+            <div key={i}>
+              <div className="flex justify-between mb-1.5">
+                <span className="text-sm font-medium text-gray-700">{c.area}</span>
+                <span className="text-sm font-bold text-indigo-600">{c.score}/100</span>
+              </div>
+              <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="absolute inset-y-0 left-0 bg-gray-300 rounded-full" style={{ width: `${c.avg}%` }} />
+                <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-indigo-600 to-indigo-400 rounded-full" style={{ width: `${c.score}%` }} />
+              </div>
+              <div className="flex justify-between mt-1">
+                <span className="text-xs text-gray-400">Industry avg: {c.avg}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Detail Page ──────────────────────────────────────────────
+function DetailPage({ companyId, onBack, user, onOpenAuth }) {
+  const company = companies.find(c => c.id === companyId);
+  const [trade, setTrade] = useState(null);
+  const [activeTab, setActiveTab] = useState("about");
+
+  const handleTrade = (mode) => {
+    if (!user) { onOpenAuth("register"); return; }
+    setTrade(mode);
+  };
+
+  if (!company) return null;
+  const tabs = [
+    { key: "about", label: "About", icon: Building2 },
+    { key: "opportunities", label: "Opportunities", icon: TrendingUp },
+    { key: "financials", label: "Financials", icon: BarChart3 },
+    ...(company.analytics ? [{ key: "analytics", label: "Analytics", icon: BarChart3 }] : []),
+    { key: "risks", label: "Risks", icon: Shield },
+  ];
+  const tabContent = { about: company.about, opportunities: company.opportunities, financials: company.financials, risks: company.risks };
+
+  return (
+    <>
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white border-b border-gray-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+            <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition mb-6">
+              <ArrowLeft size={18} /><span className="text-sm font-medium">Back to Offerings</span>
+            </button>
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <CompanyLogo company={company} size={64} />
+                <div>
+                  <div className="flex items-center gap-3"><h1 className="text-2xl font-bold text-gray-900">{company.name}</h1><Badge>{company.category}</Badge></div>
+                  <p className="text-gray-500 mt-1">{company.tagline}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => handleTrade("buy")} className="px-6 py-2.5 text-sm font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">Buy</button>
+                <button onClick={() => handleTrade("sell")} className="px-6 py-2.5 text-sm font-semibold rounded-xl border border-gray-200 text-gray-600 hover:border-gray-300 transition">Sell</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { label: "Mark Price", value: `$${company.markPrice.toFixed(2)}` },
+              { label: "Annual Change", value: `${company.annualChange >= 0 ? "+" : ""}${company.annualChange}%`, color: company.annualChange >= 0 ? "text-emerald-600" : "text-red-500" },
+              { label: "Valuation", value: company.valuation },
+              { label: "Funds Raised", value: company.fundsRaised },
+              { label: "Last Round", value: company.lastRound },
+              { label: "Round Date", value: company.roundDate },
+            ].map((stat, i) => (
+              <div key={i} className="bg-white rounded-xl p-4 border border-gray-100">
+                <p className="text-xs text-gray-400 mb-1">{stat.label}</p>
+                <p className={`text-lg font-bold ${stat.color || "text-gray-900"}`}>{stat.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            <div className="flex bg-gray-50 p-1.5 gap-1 overflow-x-auto rounded-t-2xl">
+              {tabs.map(tab => {
+                const Icon = tab.icon;
+                return (
+                  <button key={tab.key} onClick={() => setActiveTab(tab.key)}
+                    className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold whitespace-nowrap rounded-xl transition-all ${activeTab === tab.key ? "bg-white text-indigo-600 shadow-sm ring-1 ring-gray-200" : "text-gray-500 hover:text-gray-800 hover:bg-white/60"}`}>
+                    <Icon size={17} />{tab.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="p-6 sm:p-8">
+              {activeTab === "about" ? (
+                <div className="space-y-6">
+                  {/* Hero banner */}
+                  <div className="rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden" style={{background: `linear-gradient(135deg, ${company.color || '#6366f1'}, ${company.color ? company.color+'cc' : '#818cf8'})`}}>
+                    <div className="absolute inset-0 opacity-10" style={{backgroundImage:'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize:'60px 60px'}} />
+                    <div className="relative">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {company.sector && <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-sm">{company.sector}</span>}
+                        {company.founded && <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-sm">Est. {company.founded}</span>}
+                        {company.hq && <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-sm">{company.hq}</span>}
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-2">{company.name}</h3>
+                      <p className="text-white/80 text-lg">{company.tagline}</p>
+                      {company.founders && <p className="text-white/60 text-sm mt-3">Founded by {company.founders}</p>}
+                    </div>
+                  </div>
+
+                  {/* Key highlights */}
+                  {company.highlights && company.highlights.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {company.highlights.map((h, i) => (
+                        <div key={i} className="flex items-start gap-3 p-4 rounded-xl border border-gray-100 bg-gradient-to-br from-white to-gray-50 hover:shadow-md transition-shadow">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white font-bold text-sm" style={{background: company.color || '#6366f1'}}>{i+1}</div>
+                          <p className="text-sm font-medium text-gray-700 pt-1">{h}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Company description */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-bold text-gray-900 flex items-center gap-2"><Building2 size={18} style={{color: company.color || '#6366f1'}} /> Company Overview</h4>
+                    {company.about.split("\n\n").map((paragraph, i) => (
+                      <p key={i} className="text-gray-600 leading-relaxed">{paragraph}</p>
+                    ))}
+                  </div>
+
+                  {/* Quick stats row */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center p-4 rounded-xl" style={{background: (company.color || '#6366f1') + '10'}}>
+                      <p className="text-2xl font-bold" style={{color: company.color || '#6366f1'}}>{company.valuation}</p>
+                      <p className="text-xs text-gray-500 mt-1">Valuation</p>
+                    </div>
+                    <div className="text-center p-4 rounded-xl" style={{background: (company.color || '#6366f1') + '10'}}>
+                      <p className="text-2xl font-bold" style={{color: company.color || '#6366f1'}}>{company.fundsRaised}</p>
+                      <p className="text-xs text-gray-500 mt-1">Funds Raised</p>
+                    </div>
+                    <div className="text-center p-4 rounded-xl" style={{background: (company.color || '#6366f1') + '10'}}>
+                      <p className="text-2xl font-bold" style={{color: company.color || '#6366f1'}}>{company.annualChange >= 0 ? '+' : ''}{company.annualChange}%</p>
+                      <p className="text-xs text-gray-500 mt-1">Annual Change</p>
+                    </div>
+                  </div>
+                </div>
+              ) : activeTab === "analytics" && company.analytics ? (
+                <AnalyticsDashboard analytics={company.analytics} companyName={company.name} />
+              ) : (
+                tabContent[activeTab].split("\n\n").map((paragraph, i) => (
+                  <p key={i} className="text-gray-600 leading-relaxed mb-4 last:mb-0">{paragraph}</p>
+                ))
+              )}
+            </div>
+          </div>
+          <div className="mt-6 p-4 bg-amber-50 rounded-xl border border-amber-100">
+            <p className="text-xs text-amber-700"><strong>Disclaimer:</strong> This is a demo application with sample data. Pre-IPO investments carry significant risk. Always consult a qualified financial advisor.</p>
+          </div>
+        </div>
+      </div>
+      {trade && <TradeModal company={company} mode={trade} onClose={() => setTrade(null)} />}
+    </>
+  );
+}
+
+// ─── Dashboard (Always Visible) ──────────────────────────────
+function Dashboard({ user, onLogout, onOpenAuth }) {
+  const [search, setSearch] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [sortBy, setSortBy] = useState("name");
+
+  const filtered = useMemo(() => {
+    let list = companies.filter(c =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.tagline.toLowerCase().includes(search.toLowerCase()) ||
+      c.ticker.toLowerCase().includes(search.toLowerCase())
+    );
+    return list.sort((a, b) => {
+      switch (sortBy) {
+        case "price": return b.markPrice - a.markPrice;
+        case "change": return b.annualChange - a.annualChange;
+        case "valuation": return b.valuationNum - a.valuationNum;
+        default: return a.name.localeCompare(b.name);
+      }
+    });
+  }, [search, sortBy]);
+
+  if (selectedCompany) {
+    return <DetailPage companyId={selectedCompany} onBack={() => setSelectedCompany(null)} user={user} onOpenAuth={onOpenAuth} />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <TrendingUp size={18} className="text-white" />
+            </div>
+            <h1 className="text-xl font-bold text-gray-900">InvestHub</h1>
+          </div>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <span className="text-xs font-bold text-indigo-600">{(user.firstName || user.name || "U")[0].toUpperCase()}</span>
+                </div>
+                <span className="text-sm font-medium text-gray-700 hidden sm:block">{user.firstName || user.name}</span>
+              </div>
+              <button onClick={onLogout} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-500 transition" title="Sign out">
+                <LogOut size={16} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <button onClick={() => onOpenAuth("login")} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition">
+                Sign In
+              </button>
+              <button onClick={() => onOpenAuth("register")} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition">
+                Sign Up
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Pre-IPO Investment Offerings</h2>
+        <p className="text-gray-500 text-lg mb-8">Discover and invest in high-growth private companies before they go public.</p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input type="text" placeholder="Search companies by name or ticker..." value={search} onChange={e => setSearch(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+          </div>
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+            className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+            <option value="name">Sort by Name</option>
+            <option value="price">Sort by Price</option>
+            <option value="change">Sort by Performance</option>
+            <option value="valuation">Sort by Valuation</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+        {filtered.length === 0 ? (
+          <div className="text-center py-16"><p className="text-gray-400 text-lg">No companies match your search.</p></div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map(company => (
+              <CompanyCard key={company.id} company={company} onClick={setSelectedCompany} user={user} onOpenAuth={onOpenAuth} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <footer className="border-t border-gray-100 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400">
+          <p>InvestHub Demo — Not real financial advice or offerings.</p>
+          <p className="mt-2 sm:mt-0">Built with React</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ─── Auth Modal Wrapper ───────────────────────────────────────
+function AuthModal({ mode, onClose, onLogin, onComplete }) {
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 shadow-sm transition">
+          <X size={16} />
+        </button>
+        {mode === "login" ? (
+          <LoginPageInline onLogin={(u) => { onLogin(u); onClose(); }} onGoToRegister={() => onComplete("switch-register")} />
+        ) : (
+          <RegisterPageInline onComplete={(u) => { onLogin(u); onClose(); }} onGoToLogin={() => onComplete("switch-login")} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Inline versions of Login/Register (no AuthShell wrapper, just the card)
+function LoginPageInline({ onLogin, onGoToRegister }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = {};
+    if (!email.trim()) errs.email = "Email is required";
+    if (!password) errs.password = "Password is required";
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return;
+    setLoading(true);
+    setTimeout(() => { onLogin({ email, name: email.split("@")[0], firstName: email.split("@")[0] }); }, 800);
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-8">
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center"><TrendingUp size={18} className="text-white" /></div>
+        <span className="text-xl font-bold text-gray-900">InvestHub</span>
+      </div>
+      <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Welcome back</h2>
+      <p className="text-gray-500 text-center text-sm mb-6">Sign in to start trading</p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <InputField icon={Mail} label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" error={errors.email} />
+        <InputField icon={Lock} label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter your password" error={errors.password} />
+        <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition disabled:opacity-60">
+          {loading ? "Signing in..." : "Sign In"}
+        </button>
+      </form>
+      <div className="mt-5 text-center">
+        <p className="text-sm text-gray-500">Don't have an account? <button onClick={onGoToRegister} className="text-indigo-600 hover:text-indigo-700 font-semibold">Create one</button></p>
+      </div>
+    </div>
+  );
+}
+
+function RegisterPageInline({ onComplete, onGoToLogin }) {
+  const [step, setStep] = useState(0);
+  const [errors, setErrors] = useState({});
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [experience, setExperience] = useState("");
+  const [riskTolerance, setRiskTolerance] = useState("");
+  const [investGoal, setInvestGoal] = useState("");
+  const [annualIncome, setAnnualIncome] = useState("");
+  const [netWorth, setNetWorth] = useState("");
+  const [idType, setIdType] = useState("");
+  const [idNumber, setIdNumber] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedRisk, setAcceptedRisk] = useState(false);
+
+  const validateStep = () => {
+    const errs = {};
+    if (step === 0) {
+      if (!firstName.trim()) errs.firstName = "Required";
+      if (!lastName.trim()) errs.lastName = "Required";
+      if (!email.trim()) errs.email = "Required";
+      else if (!/\S+@\S+\.\S+/.test(email)) errs.email = "Invalid email";
+      if (!password) errs.password = "Required";
+      else if (password.length < 8) errs.password = "Minimum 8 characters";
+      if (password !== confirmPassword) errs.confirmPassword = "Passwords don't match";
+    }
+    if (step === 1) {
+      if (!experience) errs.experience = "Please select your experience";
+      if (!riskTolerance) errs.riskTolerance = "Please select risk tolerance";
+      if (!investGoal) errs.investGoal = "Please select your investment goal";
+    }
+    if (step === 2) {
+      if (!idType) errs.idType = "Please select ID type";
+      if (!idNumber.trim()) errs.idNumber = "Required";
+      if (!acceptedTerms) errs.terms = "You must accept the terms";
+      if (!acceptedRisk) errs.risk = "You must acknowledge the risk disclosure";
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const next = () => { if (validateStep()) setStep(s => s + 1); };
+  const prev = () => { setErrors({}); setStep(s => s - 1); };
+
+  const pwStrength = useMemo(() => {
+    if (!password) return { score: 0, label: "", color: "" };
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    const labels = ["", "Weak", "Fair", "Good", "Strong"];
+    const colors = ["", "bg-red-400", "bg-amber-400", "bg-blue-400", "bg-emerald-400"];
+    return { score, label: labels[score], color: colors[score] };
+  }, [password]);
+
+  return (
+    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-8">
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center"><TrendingUp size={18} className="text-white" /></div>
+        <span className="text-xl font-bold text-gray-900">InvestHub</span>
+      </div>
+      <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Create Account</h2>
+      <p className="text-gray-500 text-center text-sm mb-6">Start investing in pre-IPO companies</p>
+
+      <StepIndicator steps={REG_STEPS} current={step} />
+
+      {step === 0 && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <InputField icon={User} label="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="John" error={errors.firstName} />
+            <InputField label="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Doe" error={errors.lastName} />
+          </div>
+          <InputField icon={Mail} label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" error={errors.email} />
+          <InputField label="Phone (optional)" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 (555) 000-0000" />
+          <InputField icon={Lock} label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Min. 8 characters" error={errors.password} />
+          {password && (
+            <div className="flex items-center gap-2">
+              <div className="flex-1 flex gap-1">{[1,2,3,4].map(i => (<div key={i} className={`h-1.5 flex-1 rounded-full transition ${i <= pwStrength.score ? pwStrength.color : "bg-gray-100"}`} />))}</div>
+              <span className="text-xs text-gray-500">{pwStrength.label}</span>
+            </div>
+          )}
+          <InputField icon={Lock} label="Confirm Password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Re-enter password" error={errors.confirmPassword} />
+          <button onClick={next} className="w-full py-3 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">Continue <ArrowRight size={16} /></button>
+          <p className="text-sm text-gray-500 text-center">Already have an account? <button onClick={onGoToLogin} className="text-indigo-600 hover:text-indigo-700 font-semibold">Sign in</button></p>
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="space-y-4">
+          <div className="p-4 bg-indigo-50 rounded-xl mb-2"><p className="text-sm text-indigo-700">This helps us tailor recommendations and ensure regulatory compliance.</p></div>
+          <SelectField icon={Briefcase} label="Investment Experience" value={experience} onChange={e => setExperience(e.target.value)} error={errors.experience} options={[
+            { value: "", label: "Select experience level..." }, { value: "none", label: "No experience" }, { value: "beginner", label: "Beginner (< 1 year)" },
+            { value: "intermediate", label: "Intermediate (1-5 years)" }, { value: "advanced", label: "Advanced (5+ years)" }, { value: "professional", label: "Professional / Institutional" },
+          ]} />
+          <SelectField icon={Target} label="Risk Tolerance" value={riskTolerance} onChange={e => setRiskTolerance(e.target.value)} error={errors.riskTolerance} options={[
+            { value: "", label: "Select risk tolerance..." }, { value: "conservative", label: "Conservative — Preserve capital" },
+            { value: "moderate", label: "Moderate — Balanced growth" }, { value: "aggressive", label: "Aggressive — Maximum growth" }, { value: "speculative", label: "Speculative — High risk, high reward" },
+          ]} />
+          <SelectField icon={TrendingUp} label="Primary Investment Goal" value={investGoal} onChange={e => setInvestGoal(e.target.value)} error={errors.investGoal} options={[
+            { value: "", label: "Select your goal..." }, { value: "growth", label: "Long-term capital growth" }, { value: "income", label: "Regular income / dividends" },
+            { value: "diversification", label: "Portfolio diversification" }, { value: "speculation", label: "Speculative / early-stage bets" },
+          ]} />
+          <SelectField label="Annual Income (optional)" value={annualIncome} onChange={e => setAnnualIncome(e.target.value)} options={[
+            { value: "", label: "Prefer not to say" }, { value: "under50k", label: "Under $50,000" }, { value: "50k-100k", label: "$50,000 – $100,000" },
+            { value: "100k-250k", label: "$100,000 – $250,000" }, { value: "250k-1m", label: "$250,000 – $1,000,000" }, { value: "over1m", label: "Over $1,000,000" },
+          ]} />
+          <SelectField label="Net Worth (optional)" value={netWorth} onChange={e => setNetWorth(e.target.value)} options={[
+            { value: "", label: "Prefer not to say" }, { value: "under100k", label: "Under $100,000" }, { value: "100k-500k", label: "$100,000 – $500,000" },
+            { value: "500k-2m", label: "$500,000 – $2,000,000" }, { value: "2m-10m", label: "$2,000,000 – $10,000,000" }, { value: "over10m", label: "Over $10,000,000" },
+          ]} />
+          <div className="flex gap-3">
+            <button onClick={prev} className="flex-1 py-3 rounded-xl font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center gap-2"><ArrowLeft size={16} /> Back</button>
+            <button onClick={next} className="flex-[2] py-3 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">Continue <ArrowRight size={16} /></button>
+          </div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-4">
+          <div className="p-4 bg-amber-50 rounded-xl border border-amber-100 mb-2">
+            <div className="flex items-start gap-2"><AlertTriangle size={16} className="text-amber-600 mt-0.5 flex-shrink-0" /><p className="text-sm text-amber-700">Identity verification is required by regulations. Your data is encrypted and stored securely.</p></div>
+          </div>
+          <SelectField icon={FileText} label="ID Document Type" value={idType} onChange={e => setIdType(e.target.value)} error={errors.idType} options={[
+            { value: "", label: "Select document type..." }, { value: "passport", label: "Passport" }, { value: "drivers_license", label: "Driver's License" },
+            { value: "national_id", label: "National ID Card" }, { value: "residence_permit", label: "Residence Permit" },
+          ]} />
+          <InputField icon={FileText} label="Document Number" value={idNumber} onChange={e => setIdNumber(e.target.value)} placeholder="Enter document number" error={errors.idNumber} />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Upload Document (optional)</label>
+            <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-indigo-300 transition cursor-pointer">
+              <Upload size={24} className="mx-auto text-gray-400 mb-2" /><p className="text-sm text-gray-500">Drag & drop or click to upload</p><p className="text-xs text-gray-400 mt-1">JPG, PNG or PDF, max 10MB</p>
+            </div>
+          </div>
+          <div className="space-y-3 pt-2">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)} className="w-4 h-4 mt-0.5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+              <span className="text-sm text-gray-600">I agree to the <span className="text-indigo-600 font-medium">Terms of Service</span> and <span className="text-indigo-600 font-medium">Privacy Policy</span></span>
+            </label>
+            {errors.terms && <p className="text-xs text-red-500 ml-7">{errors.terms}</p>}
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" checked={acceptedRisk} onChange={e => setAcceptedRisk(e.target.checked)} className="w-4 h-4 mt-0.5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+              <span className="text-sm text-gray-600">I acknowledge that pre-IPO investments are <strong>high risk</strong> and I may lose my entire investment.</span>
+            </label>
+            {errors.risk && <p className="text-xs text-red-500 ml-7">{errors.risk}</p>}
+          </div>
+          <div className="flex gap-3">
+            <button onClick={prev} className="flex-1 py-3 rounded-xl font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center gap-2"><ArrowLeft size={16} /> Back</button>
+            <button onClick={next} className="flex-[2] py-3 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">Submit Verification <ArrowRight size={16} /></button>
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="text-center py-4">
+          <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">You're All Set!</h3>
+          <p className="text-gray-500 mb-2">Welcome to InvestHub, {firstName}.</p>
+          <p className="text-sm text-gray-400 mb-8">Your account is created and verification is being processed. Start investing right away.</p>
+          <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left space-y-2">
+            <div className="flex justify-between text-sm"><span className="text-gray-500">Account</span><span className="font-medium text-gray-900">{email}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-gray-500">Investor Profile</span><span className="font-medium text-gray-900 capitalize">{riskTolerance} risk</span></div>
+            <div className="flex justify-between text-sm"><span className="text-gray-500">Verification</span><Badge variant="green">Pending review</Badge></div>
+          </div>
+          <button onClick={() => onComplete({ firstName, lastName, email })} className="w-full py-3.5 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+            Start Investing <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Main App (Open Access) ──────────────────────────────────
+function InvestmentApp() {
+  const [user, setUser] = useState(null);
+  const [authModal, setAuthModal] = useState(null); // null | "login" | "register"
+
+  const handleAuthSwitch = (action) => {
+    if (action === "switch-register") setAuthModal("register");
+    else if (action === "switch-login") setAuthModal("login");
+  };
+
+  return (
+    <>
+      <Dashboard
+        user={user}
+        onLogout={() => setUser(null)}
+        onOpenAuth={(mode) => setAuthModal(mode)}
+      />
+      {authModal && (
+        <AuthModal
+          mode={authModal}
+          onClose={() => setAuthModal(null)}
+          onLogin={(u) => setUser(u)}
+          onComplete={handleAuthSwitch}
+        />
+      )}
+    </>
+  );
+}
+
+
+        // Mount the React app
+        ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(InvestmentApp));
+    </script>
+</body>
+</html>
