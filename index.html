@@ -1180,7 +1180,22 @@ function RegisterPageInline({ onComplete, onGoToLogin }) {
       // Final step before complete — register with Supabase
       setLoading(true);
       try {
-        const { data, error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              phone: phone,
+              experience: experience,
+              risk_tolerance: riskTolerance,
+              invest_goal: investGoal,
+              annual_income: annualIncome,
+              net_worth: netWorth,
+            }
+          }
+        });
         if (error) {
           if (error.message.includes("already registered")) {
             setErrors({ general: "Этот email уже зарегистрирован" });
@@ -1189,22 +1204,6 @@ function RegisterPageInline({ onComplete, onGoToLogin }) {
           }
           setLoading(false);
           return;
-        }
-        // Insert profile
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: data.user.id,
-          first_name: firstName,
-          last_name: lastName,
-          phone: phone,
-          experience: experience,
-          risk_tolerance: riskTolerance,
-          invest_goal: investGoal,
-          annual_income: annualIncome,
-          net_worth: netWorth,
-          role: "user",
-        });
-        if (profileError) {
-          console.error("Profile insert error:", profileError);
         }
         setLoading(false);
         setStep(2);
@@ -1300,14 +1299,14 @@ function RegisterPageInline({ onComplete, onGoToLogin }) {
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Регистрация завершена!</h3>
           <p className="text-gray-500 mb-2">Добро пожаловать в InvestHub, {firstName}.</p>
-          <p className="text-sm text-gray-400 mb-8">Ваш аккаунт создан. Проверьте почту для подтверждения email.</p>
+          <p className="text-sm text-gray-400 mb-8">Мы отправили письмо на ваш email. Перейдите по ссылке в письме для подтверждения аккаунта, затем войдите.</p>
           <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left space-y-2">
             <div className="flex justify-between text-sm"><span className="text-gray-500">Аккаунт</span><span className="font-medium text-gray-900">{email}</span></div>
             <div className="flex justify-between text-sm"><span className="text-gray-500">Профиль инвестора</span><span className="font-medium text-gray-900 capitalize">{riskTolerance}</span></div>
             <div className="flex justify-between text-sm"><span className="text-gray-500">Статус</span><Badge variant="green">Активен</Badge></div>
           </div>
-          <button onClick={() => onComplete({ firstName, lastName, email, role: "user" })} className="w-full py-3.5 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-            Начать инвестировать <ArrowRight size={16} />
+          <button onClick={() => onComplete("switch-login")} className="w-full py-3.5 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+            Войти <ArrowRight size={16} />
           </button>
         </div>
       )}
